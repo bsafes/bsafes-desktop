@@ -25,7 +25,7 @@
 		showV5LoadingIn($('.keyForm'));
 		var goldenKey = $('#enterKey').val();
 
-		var expandedKey = forge.pkcs5.pbkdf2(goldenKey, keySalt, 10000, 32);
+		var expandedKey = forge.pkcs5.pbkdf2(goldenKey, forge.util.decode64(keySalt), 10000, 32);
 	
 		var md = forge.md.sha256.create();
 		md.update(expandedKey);
@@ -48,15 +48,15 @@
 		            
 					localStorage.setItem("encodedGold", encoded);
     		  		localStorage.setItem("publicKey", data.publicKey);
-        			localStorage.setItem("encodedPrivateKeyEnvelope", forge.util.encode64(data.privateKeyEnvelope));
-          			localStorage.setItem("encodedEnvelopeIV", forge.util.encode64(data.envelopeIV));
+        			localStorage.setItem("encodedPrivateKeyEnvelope", data.privateKeyEnvelope);
+          			localStorage.setItem("encodedEnvelopeIV", data.envelopeIV);
 					var searchKeyEnvelope = data.searchKeyEnvelope;
 					var searchKeyIV = data.searchKeyIV;
 	
 					function secondFactorAuth() {
 						var randomMessage = data.randomMessage;
 						randomMessage = forge.util.encode64(randomMessage);
-						var privateKey = decryptBinaryString(data.privateKeyEnvelope, expandedKey, data.envelopeIV);
+						var privateKey = decryptBinaryString(forge.util.decode64(data.privateKeyEnvelope), expandedKey, forge.util.decode64(data.envelopeIV));
 						var pki = forge.pki;
 						var privateKeyFromPem = pki.privateKeyFromPem(privateKey);
 						var md = forge.md.sha1.create();
@@ -66,8 +66,8 @@
 							signature: signature
 						}, function(data , textStatus, jQxr) {
               				if(data.status === 'ok') {
-								localStorage.setItem("encodedSearchKeyEnvelope", forge.util.encode64(searchKeyEnvelope));
-				                localStorage.setItem("encodedSearchKeyIV", forge.util.encode64(searchKeyIV));
+								localStorage.setItem("encodedSearchKeyEnvelope", searchKeyEnvelope);
+				                localStorage.setItem("encodedSearchKeyIV", searchKeyIV);
 				                //window.location.replace(redirectURL);
 				                navigateView(redirectURL);
 							}
@@ -79,7 +79,9 @@
 			          	var randomKey = forge.random.getBytesSync(32);
 			          	var searchKey = forge.pkcs5.pbkdf2(randomKey, salt, 10000, 32);
 			          	searchKeyIV = forge.random.getBytesSync(16);
+									searchKeyIV = forge.util.encode64(searchKeyIV);
 			          	searchKeyEnvelope = encryptBinaryString(searchKey, expandedKey, searchKeyIV);
+									searchKeyEnvelope = forge.util.encode64(searchKeyEnvelope);
 						secondFactorAuth()
 						$.post(server_addr + '/memberAPI/setupSearchKey', {
 							searchKeyIV: searchKeyIV,

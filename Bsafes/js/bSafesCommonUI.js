@@ -974,16 +974,16 @@ function newResultItem(resultItem) {
   var container = resultItem.container;
   var position = resultItem.position;
   var itemKey = decryptResultInContainer(
-    resultItem.keyEnvelope,
-    resultItem.envelopeIV
+    forge.util.decode64(resultItem.keyEnvelope),
+    forge.util.decode64(resultItem.envelopeIV)
   );
   var itemIV = decryptResultInContainer(
-    resultItem.ivEnvelope,
-    resultItem.ivEnvelopeIV
+    forge.util.decode64(resultItem.ivEnvelope),
+    forge.util.decode64(resultItem.ivEnvelopeIV)
   );
   if (resultItem.title) {
     try {
-      var encodedTitle = decryptBinaryString(resultItem.title, itemKey, itemIV);
+      var encodedTitle = decryptBinaryString(forge.util.decode64(resultItem.title), itemKey, itemIV);
       var title = forge.util.decodeUtf8(encodedTitle);
       title = DOMPurify.sanitize(title);
     } catch (err) {

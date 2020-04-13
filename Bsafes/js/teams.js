@@ -285,7 +285,7 @@ function loadPage(){
 
 			if(team._source.encryptedTeamName) {
 				if(team._source.cachedTeamName) {
-					var encodedTeamName = ECBDecryptBinaryString(team._source.cachedTeamName, searchKey);
+					var encodedTeamName = ECBDecryptBinaryString(forge.util.decode64(team._source.cachedTeamName), searchKey);
 					var teamName = forge.util.decodeUtf8(encodedTeamName);
           appendResult(teamName);
 					i++;
@@ -294,7 +294,7 @@ function loadPage(){
           }			
 				} else {
 					var privateKeyFromPem = pki.privateKeyFromPem(privateKeyPem);
-					var encodedTeamName = privateKeyFromPem.decrypt(team._source.encryptedTeamName);
+					var encodedTeamName = privateKeyFromPem.decrypt(forge.util.decode64(team._source.encryptedTeamName));
 					var teamName = forge.util.decodeUtf8(encodedTeamName);
 					appendResult(teamName);
 			
@@ -302,7 +302,7 @@ function loadPage(){
 					$.post(server_addr + '/memberAPI/cacheTeamNameForTeamMember', {
           	teamId: teamId,
           	memberId: memberId,
-          	cachedTeamName: cachedTeamName
+          	cachedTeamName: forge.util.encode64(cachedTeamName)
         	}, function(data, textStatus, jQxhr) {
           	if(data.status === 'ok') {
             	i++;
@@ -315,11 +315,11 @@ function loadPage(){
 			} else {
 				var teamKeyEnvelope = team._source.teamKeyEnvelope;
 				var privateKeyFromPem = pki.privateKeyFromPem(privateKeyPem);
-				var encodedTeamKey = privateKeyFromPem.decrypt(teamKeyEnvelope);
+				var encodedTeamKey = privateKeyFromPem.decrypt(forge.util.decode64(teamKeyEnvelope));
 				var teamKey = forge.util.decodeUtf8(encodedTeamKey);
 				var encryptedTeamName = team.team._source.name;
 				var teamIV = team.team._source.IV;
-				var encodedTeamName = decryptBinaryString(encryptedTeamName, teamKey, teamIV);
+				var encodedTeamName = decryptBinaryString(forge.util.decode64(encryptedTeamName), teamKey, forge.util.decode64(teamIV));
 				var teamName = forge.util.decodeUtf8(encodedTeamName);
 				appendResult(teamName);
 
@@ -329,7 +329,7 @@ function loadPage(){
 				$.post(server_addr + '/memberAPI/updateTeamNameForTeamMember', {
       		teamId: teamId,
       		memberId: memberId,
-					encryptedTeamName: encryptedTeamName
+					encryptedTeamName: forge.util.encode64(encryptedTeamName)
     		}, function(data, textStatus, jQxhr) {
       		if(data.status === 'ok') {
 						i++;
