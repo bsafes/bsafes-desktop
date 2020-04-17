@@ -131,17 +131,17 @@ function showPath(
     if (i !== 0 && i !== path.length - 1) {
       var thisItem = path[i];
       var itemKey = decryptBinaryString(
-        thisItem._source.keyEnvelope,
+        forge.util.decode64(thisItem._source.keyEnvelope),
         envelopeKey,
-        thisItem._source.envelopeIV
+        forge.util.decode64(thisItem._source.envelopeIV)
       );
       var itemIV = decryptBinaryString(
-        thisItem._source.ivEnvelope,
+        forge.util.decode64(thisItem._source.ivEnvelope),
         envelopeKey,
-        thisItem._source.ivEnvelopeIV
+        forge.util.decode64(thisItem._source.ivEnvelopeIV)
       );
       var encodedTitle = decryptBinaryString(
-        thisItem._source.title,
+        forge.util.decode64(thisItem._source.title),
         itemKey,
         itemIV
       );
@@ -1394,7 +1394,7 @@ function displayContainers(containers, total, mode) {
       if (thisItem.title) {
         try {
           var encodedTitle = decryptBinaryString(
-            thisItem.title,
+            forge.util.decode64(thisItem.title),
             itemKey,
             itemIV
           );

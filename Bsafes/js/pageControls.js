@@ -350,10 +350,10 @@ function initializeTagsInput() {
                     "targetItem": itemId,
                     "targetPosition": itemPosition,
                     "type": 'Page',
-                    "keyEnvelope": keyEnvelope,
-                    "ivEnvelope": ivEnvelope,
-                    "envelopeIV": envelopeIV,
-                    "ivEnvelopeIV": ivEnvelopeIV,
+                    "keyEnvelope": forge.util.encode64(keyEnvelope),
+                    "ivEnvelope": forge.util.encode64(ivEnvelope),
+                    "envelopeIV": forge.util.encode64(envelopeIV),
+                    "ivEnvelopeIV": forge.util.encode64(ivEnvelopeIV),
                     tags: JSON.stringify(encryptedTags),
                     tagsTokens: JSON.stringify(tagsTokens)
                 }
@@ -373,10 +373,10 @@ function initializeTagsInput() {
             } else if (itemContainer.substring(0, 1) === 'n') {
                 $.post(server_addr + '/memberAPI/createANotebookPage', {
                     "itemId": itemId,
-                    "keyEnvelope": keyEnvelope,
-                    "ivEnvelope": ivEnvelope,
-                    "envelopeIV": envelopeIV,
-                    "ivEnvelopeIV": ivEnvelopeIV,
+                    "keyEnvelope": forge.util.encode64(keyEnvelope),
+                    "ivEnvelope": forge.util.encode64(ivEnvelope),
+                    "envelopeIV": forge.util.encode64(envelopeIV),
+                    "ivEnvelopeIV": forge.util.encode64(ivEnvelopeIV),
                     tags: JSON.stringify(encryptedTags),
                     tagsTokens: JSON.stringify(tagsTokens)
                 }, function(data, textStatus, jQxhr) {
@@ -390,10 +390,10 @@ function initializeTagsInput() {
             } else if (itemContainer.substring(0, 1) === 'd') {
                 $.post(server_addr + '/memberAPI/createADiaryPage', {
                     "itemId": itemId,
-                    "keyEnvelope": keyEnvelope,
-                    "ivEnvelope": ivEnvelope,
-                    "envelopeIV": envelopeIV,
-                    "ivEnvelopeIV": ivEnvelopeIV,
+                    "keyEnvelope": forge.util.encode64(keyEnvelope),
+                    "ivEnvelope": forge.util.encode64(ivEnvelope),
+                    "envelopeIV": forge.util.encode64(envelopeIV),
+                    "ivEnvelopeIV": forge.util.encode64(ivEnvelopeIV),
                     tags: JSON.stringify(encryptedTags),
                     tagsTokens: JSON.stringify(tagsTokens)
                 }, function(data, textStatus, jQxhr) {
@@ -653,11 +653,11 @@ function saveTitle() {
                 "targetItem": itemId,
                 "targetPosition": itemPosition,
                 "type": 'Page',
-                "keyEnvelope": keyEnvelope,
-                "ivEnvelope": ivEnvelope,
-                "envelopeIV": envelopeIV,
-                "ivEnvelopeIV": ivEnvelopeIV,
-                "title": encryptedTitle,
+                "keyEnvelope": forge.util.encode64(keyEnvelope),
+                "ivEnvelope": forge.util.encode64(ivEnvelope),
+                "envelopeIV": forge.util.encode64(envelopeIV),
+                "ivEnvelopeIV": forge.util.encode64(ivEnvelopeIV),
+                "title": forge.util.encode64(encryptedTitle),
                 "titleTokens": JSON.stringify(titleTokens)
             }
 
@@ -697,11 +697,11 @@ function saveTitle() {
                 dataType: 'json',
                 data: {
                     "itemId": itemId,
-                    "keyEnvelope": keyEnvelope,
-                    "ivEnvelope": ivEnvelope,
-                    "envelopeIV": envelopeIV,
-                    "ivEnvelopeIV": ivEnvelopeIV,
-                    "title": encryptedTitle,
+                    "keyEnvelope": forge.util.encode64(keyEnvelope),
+                    "ivEnvelope": forge.util.encode64(ivEnvelope),
+                    "envelopeIV": forge.util.encode64(envelopeIV),
+                    "ivEnvelopeIV": forge.util.encode64(ivEnvelopeIV),
+                    "title": forge.util.encode64(encryptedTitle),
                     "titleTokens": JSON.stringify(titleTokens)
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
@@ -726,11 +726,11 @@ function saveTitle() {
                 dataType: 'json',
                 data: {
                     "itemId": itemId,
-                    "keyEnvelope": keyEnvelope,
-                    "ivEnvelope": ivEnvelope,
-                    "envelopeIV": envelopeIV,
-                    "ivEnvelopeIV": ivEnvelopeIV,
-                    "title": encryptedTitle,
+                    "keyEnvelope": forge.util.encode64(keyEnvelope),
+                    "ivEnvelope": forge.util.encode64(ivEnvelope),
+                    "envelopeIV": forge.util.encode64(envelopeIV),
+                    "ivEnvelopeIV": forge.util.encode64(ivEnvelopeIV),
+                    "title": forge.util.encode64(encryptedTitle),
                     "titleTokens": JSON.stringify(titleTokens)
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
@@ -750,7 +750,7 @@ function saveTitle() {
             });
         }
     } else {
-        itemCopy.title = encryptedTitle;
+        itemCopy.title = forge.util.encode64(encryptedTitle);
         itemCopy.titleTokens = titleTokens;
         itemCopy.update = "title";
         createNewItemVersionForPage();
@@ -848,11 +848,11 @@ function saveContent() {
                 "targetItem": itemId,
                 "targetPosition": itemPosition,
                 "type": 'Page',
-                "keyEnvelope": keyEnvelope,
-                "ivEnvelope": ivEnvelope,
-                "envelopeIV": envelopeIV,
-                "ivEnvelopeIV": ivEnvelopeIV,
-                "content": encryptedContent,
+                "keyEnvelope": forge.util.encode64(keyEnvelope),
+                "ivEnvelope": forge.util.encode64(ivEnvelope),
+                "envelopeIV": forge.util.encode64(envelopeIV),
+                "ivEnvelopeIV": forge.util.encode64(ivEnvelopeIV),
+                "content": forge.util.encode64(encryptedContent),
                 "s3ObjectsInContent": JSON.stringify(s3ObjectsInContent),
                 "s3ObjectsSizeInContent": s3ObjectsSize
             }
@@ -893,11 +893,11 @@ function saveContent() {
                 dataType: 'json',
                 data: {
                     "itemId": itemId,
-                    "keyEnvelope": keyEnvelope,
-                    "ivEnvelope": ivEnvelope,
-                    "envelopeIV": envelopeIV,
-                    "ivEnvelopeIV": ivEnvelopeIV,
-                    "content": encryptedContent,
+                    "keyEnvelope": forge.util.encode64(keyEnvelope),
+                    "ivEnvelope": forge.util.encode64(ivEnvelope),
+                    "envelopeIV": forge.util.encode64(envelopeIV),
+                    "ivEnvelopeIV": forge.util.encode64(ivEnvelopeIV),
+                    "content": forge.util.encode64(encryptedContent),
                     "s3ObjectsInContent": JSON.stringify(s3ObjectsInContent),
                     "s3ObjectsSizeInContent": s3ObjectsSize
                 },
@@ -923,11 +923,11 @@ function saveContent() {
                 dataType: 'json',
                 data: {
                     "itemId": itemId,
-                    "keyEnvelope": keyEnvelope,
-                    "ivEnvelope": ivEnvelope,
-                    "envelopeIV": envelopeIV,
-                    "ivEnvelopeIV": ivEnvelopeIV,
-                    "content": encryptedContent,
+                    "keyEnvelope": forge.util.encode64(keyEnvelope),
+                    "ivEnvelope": forge.util.encode64(ivEnvelope),
+                    "envelopeIV": forge.util.encode64(envelopeIV),
+                    "ivEnvelopeIV": forge.util.encode64(ivEnvelopeIV),
+                    "content": forge.util.encode64(encryptedContent),
                     "s3ObjectsInContent": JSON.stringify(s3ObjectsInContent),
                     "s3ObjectsSizeInContent": s3ObjectsSize
                 },
@@ -948,7 +948,7 @@ function saveContent() {
             });
         }
     } else {
-        itemCopy.content = encryptedContent;
+        itemCopy.content = forge.util.encode64(encryptedContent);
         itemCopy.s3ObjectsInContent = s3ObjectsInContent;
         itemCopy.s3ObjectsSizeInContent = s3ObjectsSize;
         itemCopy.update = "content";
@@ -974,7 +974,7 @@ function saveNewComment() {
         itemCopy.content = encryptedContent;
         $.post(server_addr + '/memberAPI/saveNewPageComment', {
             itemId: itemId,
-            content: encryptedContent
+            content: forge.util.encode64(encryptedContent)
         }, function(data, textStatus, jQxhr) {
             if (data.status === 'ok') {
 
@@ -1024,7 +1024,7 @@ function updateComment() {
         $.post(server_addr + '/memberAPI/updatePageComment', {
             itemId: itemId,
             commentId: commentId,
-            content: encryptedContent
+            content: forge.util.encode64(encryptedContent)
         }, function(data, textStatus, jQxhr) {
             if (data.status === 'ok') {
                 var lastUpdateTime = "Updated, " + formatTimeDisplay(data.lastUpdateTime);
@@ -1044,6 +1044,7 @@ function saveImageWords() {
     content = tempElement.html();
     var encodedContent = forge.util.encodeUtf8(content);
     var encryptedContent = encryptBinaryString(encodedContent, itemKey, itemIV);
+		encryptedContent = forge.util.encode64(encryptedContent);
 
     var index = currentEditorId.split('-')[1];
     itemCopy.images[index].words = encryptedContent;
@@ -1383,7 +1384,7 @@ var downloadAttachment = function(e) {
             if (data.status === 'ok') {
                 console.log(data);
                 if (chunkIndex === 0) {
-                    var encodedFileName = decryptBinaryString(data.fileName, itemKey, itemIV);
+                    var encodedFileName = decryptBinaryString(forge.util.decode64(data.fileName), itemKey, itemIV);
                     fileName = forge.util.decodeUtf8(encodedFileName);
                     fileType = data.fileType;
                     fileSize = data.fileSize;
@@ -1621,12 +1622,12 @@ function uploadAttachment($attachment) {
                                         "targetItem": itemId,
                                         "targetPosition": itemPosition,
                                         "type": 'Page',
-                                        "keyEnvelope": keyEnvelope,
-                                        "ivEnvelope": ivEnvelope,
-                                        "envelopeIV": envelopeIV,
-                                        "ivEnvelopeIV": ivEnvelopeIV,
+                                        "keyEnvelope": forge.util.encode64(keyEnvelope),
+                                        "ivEnvelope": forge.util.encode64(ivEnvelope),
+                                        "envelopeIV": forge.util.encode64(envelopeIV),
+                                        "ivEnvelopeIV": forge.util.encode64(ivEnvelopeIV),
                                         "s3KeyPrefix": s3KeyPrefix,
-                                        "fileName": encryptedFileName,
+                                        "fileName": forge.util.encode64(encryptedFileName),
                                         "fileType": file.type,
                                         "size": file.size,
                                         "numberOfChunks": numberOfChunks
@@ -1657,12 +1658,12 @@ function uploadAttachment($attachment) {
                                 } else if (itemContainer.substring(0, 1) === 'n') {
                                     $.post(server_addr + '/memberAPI/createANotebookPage', {
                                         "itemId": itemId,
-                                        "keyEnvelope": keyEnvelope,
-                                        "ivEnvelope": ivEnvelope,
-                                        "envelopeIV": envelopeIV,
-                                        "ivEnvelopeIV": ivEnvelopeIV,
+                                        "keyEnvelope": forge.util.encode64(keyEnvelope),
+                                        "ivEnvelope": forge.util.encode64(ivEnvelope),
+                                        "envelopeIV": forge.util.encode64(envelopeIV),
+                                        "ivEnvelopeIV": forge.util.encode64(ivEnvelopeIV),
                                         "s3KeyPrefix": s3KeyPrefix,
-                                        "fileName": encryptedFileName,
+                                        "fileName": forge.util.encode64(encryptedFileName),
                                         "fileType": file.type,
                                         "size": file.size,
                                         "numberOfChunks": numberOfChunks
@@ -1687,12 +1688,12 @@ function uploadAttachment($attachment) {
                                 } else if (itemContainer.substring(0, 1) === 'd') {
                                     $.post(server_addr + '/memberAPI/createADiaryPage', {
                                         "itemId": itemId,
-                                        "keyEnvelope": keyEnvelope,
-                                        "ivEnvelope": ivEnvelope,
-                                        "envelopeIV": envelopeIV,
-                                        "ivEnvelopeIV": ivEnvelopeIV,
+                                        "keyEnvelope": forge.util.encode64(keyEnvelope),
+                                        "ivEnvelope": forge.util.encode64(ivEnvelope),
+                                        "envelopeIV": forge.util.encode64(envelopeIV),
+                                        "ivEnvelopeIV": forge.util.encode64(ivEnvelopeIV),
                                         "s3KeyPrefix": s3KeyPrefix,
-                                        "fileName": encryptedFileName,
+                                        "fileName": forge.util.encode64(encryptedFileName),
                                         "fileType": file.type,
                                         "size": file.size,
                                         "numberOfChunks": numberOfChunks
@@ -1725,11 +1726,11 @@ function uploadAttachment($attachment) {
                                 var uploadedAttachment = {
                                     "s3KeyPrefix": s3KeyPrefix,
                                     "itemId": itemId,
-                                    "keyEnvelope": keyEnvelope,
-                                    "ivEnvelope": ivEnvelope,
-                                    "envelopeIV": envelopeIV,
-                                    "ivEnvelopeIV": ivEnvelopeIV,
-                                    "fileName": encryptedFileName,
+                                    "keyEnvelope": forge.util.encode64(keyEnvelope),
+                                    "ivEnvelope": forge.util.encode64(ivEnvelope),
+                                    "envelopeIV": forge.util.encode64(envelopeIV),
+                                    "ivEnvelopeIV": forge.util.encode64(ivEnvelopeIV),
+                                    "fileName": forge.util.encode64(encryptedFileName),
                                     "fileType": file.type ? file.type : "unknown",
                                     "size": file.size,
                                     "numberOfChunks": numberOfChunks
@@ -2701,7 +2702,7 @@ function getPageItem(thisItemId, thisExpandedKey, thisPrivateKey, thisSearchKey,
                 $comment.find('.commentLastUpdateTime').html(lastUpdateTime);
                 $comment.find('.commentLastUpdateTimeRow').removeClass('hidden');
             }
-            var encodedContent = decryptBinaryString(comment.content, itemKey, itemIV);
+            var encodedContent = decryptBinaryString(forge.util.decode64(comment.content), itemKey, itemIV);
             var content = forge.util.decodeUtf8(encodedContent);
             content = DOMPurify.sanitize(content);
             $comment.find('.froala-editor').html(content);
@@ -2760,15 +2761,15 @@ function getPageItem(thisItemId, thisExpandedKey, thisPrivateKey, thisSearchKey,
                             getAndShowPath(itemId, envelopeKey, teamName, "");
                             done("Error: undefined item key");
                         }
-                        itemKey = decryptBinaryString(item.keyEnvelope, envelopeKey, item.envelopeIV);
-                        itemIV = decryptBinaryString(item.ivEnvelope, envelopeKey, item.ivEnvelopeIV);
+                        itemKey = decryptBinaryString(forge.util.decode64(item.keyEnvelope), envelopeKey, forge.util.decode64(item.envelopeIV));
+                        itemIV = decryptBinaryString(forge.util.decode64(item.ivEnvelope), envelopeKey, forge.util.decode64(item.ivEnvelopeIV));
                         itemTags = [];
                         if (item.tags && item.tags.length > 1) {
                             var encryptedTags = item.tags;
                             for (var i = 0; i < (item.tags.length - 1); i++) {
                                 try {
                                     var encryptedTag = encryptedTags[i];
-                                    var encodedTag = decryptBinaryString(encryptedTag, itemKey, itemIV);
+                                    var encodedTag = decryptBinaryString(forge.util.decode64(encryptedTag), itemKey, itemIV);
                                     var tag = forge.util.decodeUtf8(encodedTag);
                                     
                                     if (tag == constContentTypeWrite) {
@@ -2812,7 +2813,7 @@ function getPageItem(thisItemId, thisExpandedKey, thisPrivateKey, thisSearchKey,
                         var titleText = "";
                         if (item.title) {
                             try {
-                                var encodedTitle = decryptBinaryString(item.title, itemKey, itemIV);
+                                var encodedTitle = decryptBinaryString(forge.util.decode64(item.title), itemKey, itemIV);
                                 title = forge.util.decodeUtf8(encodedTitle);
                                 title = DOMPurify.sanitize(title);
                                 $('.froala-editor#title').html(title);
@@ -2830,7 +2831,7 @@ function getPageItem(thisItemId, thisExpandedKey, thisPrivateKey, thisSearchKey,
                         var content = null;
                         if (item.content) {
                             try {
-                                var encodedContent = decryptBinaryString(item.content, itemKey, itemIV);
+                                var encodedContent = decryptBinaryString(forge.util.decode64(item.content), itemKey, itemIV);
                                 content = forge.util.decodeUtf8(encodedContent);
                                 DOMPurify.addHook('afterSanitizeAttributes', function(node) {
                                     // set all elements owning target to target=_blank
@@ -2940,7 +2941,7 @@ function getPageItem(thisItemId, thisExpandedKey, thisPrivateKey, thisSearchKey,
                                                                 $imagePanel.find('.image').append($thisImg);
                                                                 var encryptedWords = $downloadImage.data('words');
                                                                 if (encryptedWords) {
-                                                                    var encodedWords = decryptBinaryString(encryptedWords, itemKey, itemIV);
+                                                                    var encodedWords = decryptBinaryString(forge.util.decode64(encryptedWords), itemKey, itemIV);
                                                                     var words = forge.util.decodeUtf8(encodedWords);
                                                                     words = DOMPurify.sanitize(words);
                                                                     $imagePanel.find('.froala-editor').html(words);
@@ -3006,7 +3007,7 @@ function getPageItem(thisItemId, thisExpandedKey, thisPrivateKey, thisSearchKey,
                         var attachments = item.attachments;
                         for (var i = 1; i < attachments.length; i++) {
                             var attachment = attachments[i];
-                            var encodedFileName = decryptBinaryString(attachment.fileName, itemKey, itemIV);
+                            var encodedFileName = decryptBinaryString(forge.util.decode64(attachment.fileName), itemKey, itemIV);
                             var fileName = forge.util.decodeUtf8(encodedFileName);
                             var $attachment = showAttachment(fileName, attachment.size);
                             $attachment.attr('id', attachment.s3KeyPrefix);
@@ -3049,10 +3050,10 @@ function getPageItem(thisItemId, thisExpandedKey, thisPrivateKey, thisSearchKey,
 
                             } else {
                                 var teamKeyEnvelope = team.teamKeyEnvelope;
-                                teamKey = pkiDecrypt(teamKeyEnvelope);
+                                teamKey = pkiDecrypt(forge.util.decode64(teamKeyEnvelope));
                                 var encryptedTeamName = team.team._source.name;
                                 var teamIV = team.team._source.IV;
-                                teamName = decryptBinaryString(encryptedTeamName, teamKey, teamIV);
+                                teamName = decryptBinaryString(forge.util.decode64(encryptedTeamName), teamKey, forge.util.decode64(teamIV));
                                 teamName = forge.util.decodeUtf8(teamName);
                                 teamName = DOMPurify.sanitize(teamName);
 
@@ -3067,7 +3068,7 @@ function getPageItem(thisItemId, thisExpandedKey, thisPrivateKey, thisSearchKey,
                                 var teamSearchKeyEnvelope = team.team._source.searchKeyEnvelope;
                                 var teamSearchKeyIV = team.team._source.searchKeyIV;
 
-                                teamSearchKey = decryptBinaryString(teamSearchKeyEnvelope, teamKey, teamSearchKeyIV);
+                                teamSearchKey = decryptBinaryString(forge.util.decode64(teamSearchKeyEnvelope), teamKey, forge.util.decode64(teamSearchKeyIV));
                                 setIsATeamItem(teamKey, teamSearchKey);
 
                                 decryptItem(teamKey);
@@ -3112,15 +3113,15 @@ function getPageItem(thisItemId, thisExpandedKey, thisPrivateKey, thisSearchKey,
                                         done(err);
                                     } else {
                                         var teamKeyEnvelope = team.teamKeyEnvelope;
-                                        teamKey = pkiDecrypt(teamKeyEnvelope);
+                                        teamKey = pkiDecrypt(forge.util.decode64(teamKeyEnvelope));
                                         var encryptedTeamName = team.team._source.name;
                                         var teamIV = team.team._source.IV;
-                                        teamName = decryptBinaryString(encryptedTeamName, teamKey, teamIV);
+                                        teamName = decryptBinaryString(forge.util.decode64(encryptedTeamName), teamKey, forge.util.decode64(teamIV));
                                         teamName = forge.util.decodeUtf8(teamName);
                                         teamName = DOMPurify.sanitize(teamName);
                                         var teamSearchKeyEnvelope = team.team._source.searchKeyEnvelope;
                                         var teamSearchKeyIV = team.team._source.searchKeyIV;
-                                        teamSearchKey = decryptBinaryString(teamSearchKeyEnvelope, teamKey, teamSearchKeyIV);
+                                        teamSearchKey = decryptBinaryString(forge.util.decode64(teamSearchKeyEnvelope), teamKey, forge.util.decode64(teamSearchKeyIV));
                                         $('.pathSpace').find('a').html(teamName);
                                         showPath(teamName, itemPath, itemContainer, teamKey, itemId);
 
