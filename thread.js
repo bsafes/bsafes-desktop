@@ -300,15 +300,15 @@ function getPageItem(thisItemId, thisExpandedKey, thisPrivateKey, thisSearchKey,
 						done("Error: undefined item key");
 						return;
 					}
-                    itemKey = decryptBinaryString(item.keyEnvelope, envelopeKey, item.envelopeIV);
-                    itemIV = decryptBinaryString(item.ivEnvelope, envelopeKey, item.ivEnvelopeIV);
+                    itemKey = decryptBinaryString(forge.util.decode64(item.keyEnvelope), envelopeKey, forge.util.decode64(item.envelopeIV));
+                    itemIV = decryptBinaryString(forge.util.decode64(item.ivEnvelope), envelopeKey, forge.util.decode64(item.ivEnvelopeIV));
                     itemTags = [];
                     if (item.tags && item.tags.length > 1) {
                         var encryptedTags = item.tags;
                         for (var i = 0; i < (item.tags.length - 1); i++) {
                             try {
                                 var encryptedTag = encryptedTags[i];
-                                var encodedTag = decryptBinaryString(encryptedTag, itemKey, itemIV);
+                                var encodedTag = decryptBinaryString(forge.util.decode64(encryptedTag), itemKey, itemIV);
                                 var tag = forge.util.decodeUtf8(encodedTag);
                                 //itemTags.push(tag);
                                 if (tag == constContentTypeWrite) {
@@ -339,7 +339,7 @@ function getPageItem(thisItemId, thisExpandedKey, thisPrivateKey, thisSearchKey,
                     var titleText = "";
                     if (item.title) {
                         try {
-                            var encodedTitle = decryptBinaryString(item.title, itemKey, itemIV);
+                            var encodedTitle = decryptBinaryString(forge.util.decode64(item.title), itemKey, itemIV);
                             title = forge.util.decodeUtf8(encodedTitle);
                             title = DOMPurify.sanitize(title);
                             $('.froala-editor#title').html(title);
@@ -362,7 +362,7 @@ function getPageItem(thisItemId, thisExpandedKey, thisPrivateKey, thisSearchKey,
                     var content = null;
                     if (item.content) {
                         try {
-                            var encodedContent = decryptBinaryString(item.content, itemKey, itemIV);
+                            var encodedContent = decryptBinaryString(forge.util.decode64(item.content), itemKey, itemIV);
                             content = forge.util.decodeUtf8(encodedContent);
                             DOMPurify.addHook('afterSanitizeAttributes', function(node) {
                                 // set all elements owning target to target=_blank
@@ -491,10 +491,10 @@ function getPageItem(thisItemId, thisExpandedKey, thisPrivateKey, thisSearchKey,
                             done(err, item);
                         } else {
                             var teamKeyEnvelope = team.teamKeyEnvelope;
-                            teamKey = pkiDecrypt(teamKeyEnvelope);
+                            teamKey = pkiDecrypt(forge.util.decode64(teamKeyEnvelope));
                             var encryptedTeamName = team.team._source.name;
                             var teamIV = team.team._source.IV;
-                            teamName = decryptBinaryString(encryptedTeamName, teamKey, teamIV);
+                            teamName = decryptBinaryString(forge.util.decode64(encryptedTeamName), teamKey, forge.util.decode64(teamIV));
                             teamName = forge.util.decodeUtf8(teamName);
                             teamName = DOMPurify.sanitize(teamName);
 
@@ -509,7 +509,7 @@ function getPageItem(thisItemId, thisExpandedKey, thisPrivateKey, thisSearchKey,
                             var teamSearchKeyEnvelope = team.team._source.searchKeyEnvelope;
                             var teamSearchKeyIV = team.team._source.searchKeyIV;
 
-                            teamSearchKey = decryptBinaryString(teamSearchKeyEnvelope, teamKey, teamSearchKeyIV);
+                            teamSearchKey = decryptBinaryString(forge.util.decode64(teamSearchKeyEnvelope), teamKey, forge.util.decode64(teamSearchKeyIV));
                             //setIsATeamItem(teamKey, teamSearchKey);
 
                             decryptItem(teamKey, done);
@@ -551,15 +551,15 @@ function getPageItem(thisItemId, thisExpandedKey, thisPrivateKey, thisSearchKey,
                                     done(err, thisItemId);
                                 } else {
                                     var teamKeyEnvelope = team.teamKeyEnvelope;
-                                    teamKey = pkiDecrypt(teamKeyEnvelope);
+                                    teamKey = pkiDecrypt(forge.util.decode64(teamKeyEnvelope));
                                     var encryptedTeamName = team.team._source.name;
                                     var teamIV = team.team._source.IV;
-                                    teamName = decryptBinaryString(encryptedTeamName, teamKey, teamIV);
+                                    teamName = decryptBinaryString(forge.util.decode64(encryptedTeamName), teamKey, forge.util.decode64(teamIV));
                                     teamName = forge.util.decodeUtf8(teamName);
                                     teamName = DOMPurify.sanitize(teamName);
                                     var teamSearchKeyEnvelope = team.team._source.searchKeyEnvelope;
                                     var teamSearchKeyIV = team.team._source.searchKeyIV;
-                                    teamSearchKey = decryptBinaryString(teamSearchKeyEnvelope, teamKey, teamSearchKeyIV);
+                                    teamSearchKey = decryptBinaryString(forge.util.decode64(teamSearchKeyEnvelope), teamKey, forge.util.decode64(teamSearchKeyIV));
                                     $('.pathSpace').find('a').html(teamName);
                                     //showPath(teamName, itemPath, itemContainer, teamKey, itemId);
 
@@ -1107,6 +1107,7 @@ var downloadAttachment = function(id, done) {
                     fs.write(fd, new Buffer(buffer), 0, buffer.length, null, (err) => {
                         if (err) throw 'error writing file: ' + err;
                         //console.log('dbInsertPageAttatchment(chunkIndex)', currentAttachmentChunkIndex)
+												dbInsertPageAttatchment(server_addr + '/memberAPI/preS3ChunkDownload', itemId, current_chunkIndex, id, data='', file_name);
                         
                         fs.close(fd, function() {
                             console.log('  wrote the Attatchment file successfully');
@@ -1124,7 +1125,7 @@ var downloadAttachment = function(id, done) {
                     downloadedFileProgress = currentAttachmentChunkIndex / numberOfChunks * 100;
                     downloadDecryptAndAssemble();
                 } else {
-                    dbInsertPageAttatchment(server_addr + '/memberAPI/preS3ChunkDownload', itemId, current_chunkIndex, id, data='', file_name);
+                    //dbInsertPageAttatchment(server_addr + '/memberAPI/preS3ChunkDownload', itemId, current_chunkIndex, id, data='', file_name);
                     updatePageStatus(itemId, 'Attatchment', done);
                     // done();
                 }
