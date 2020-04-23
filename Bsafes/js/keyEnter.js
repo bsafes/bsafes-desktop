@@ -10,7 +10,8 @@
 	$.post(server_addr + '/memberAPI/keyEnterPreflight', {
 		}, function(data, textStatus, jQxhr ){
 			if(data.status === 'ok') {
-				keySalt = data.keySalt;	
+				keySalt = data.keySalt;
+				localStorage.setItem("keySalt", keySalt);
 			} else {
 				alert("System Error: Please reload this page and try again!");
 			}

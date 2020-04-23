@@ -57,6 +57,7 @@
 			return;
 		}
 		checkLastActiveTime();
+/*
     var isSignedIn = localStorage.getItem("isSignedIn");
     if(isSignedIn && (isSignedIn === "true")) {
       console.log("signedIn");
@@ -69,6 +70,7 @@
     } else {
       window.location.replace("/");
     }
+*/
   }
 	setTimeout(checkState, 1000);
 }());

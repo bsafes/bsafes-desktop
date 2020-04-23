@@ -936,8 +936,10 @@ function dbQueryInfo(url, option, fn)
 	db.get(sql, [url], function(err, row) {
 		if (err) {
 			console.log(err, 'dbQueryInfo')
+			fn(null);
 		} else if (row == undefined) {
 			console.log('no items');
+			fn(null);
 		} else {
 			var blobData = row.jd;
 			var data = BSON.deserialize(blobData);			

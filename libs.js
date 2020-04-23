@@ -189,14 +189,29 @@ $('.btnBSafes').click(function(e) {
 
 $('.btnLocal').click(function(e) {
 	e.preventDefault();
-	ipcRenderer.send( "setNavigateFolder", 'local' );
+	
+	dbQueryInfo(server_addr + '/memberAPI/preflight', {
+ 		sessionResetRequired: false 
+ 	}, function(data, textStatus, jQxhr ){
+		if(data && data.status === 'ok'){
+			if(data.keySalt && data.keyHash) {
+				ipcRenderer.send( "setNavigateFolder", 'local' );
+			
+				if(!data.encodedGold) {
+					navigateView('../../Local/views/keyEnter.ejs');
+				} else {
+ 					var last_url = localStorage.getItem('local_last_url');
+ 					if (last_url) {
+ 						navigateView(last_url);
+ 					} else {
+ 						navigateView('../../Local/views/teams.ejs');
+ 					}
+				}
+			} else {
 
-	var last_url = localStorage.getItem('local_last_url');
-	if (last_url) {
-		navigateView(last_url);
-	} else {
-		navigateView('../../Local/views/teams.ejs');
-	}
+			}
+		}
+	});
 })
 
 $('.btnDownloads').click(function(e) {

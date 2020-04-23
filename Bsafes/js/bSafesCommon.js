@@ -55,6 +55,9 @@ function bSafesPreflight(fn) {
     }, function(data, textStatus, jQxhr) {
 
         if (data.status === 'ok') {
+						var keySalt = localStorage.getItem("keySalt");
+						data.keySalt = keySalt;
+
             var sessionKey = data.sessionKey;
             var sessionIV = data.sessionIV;
 
@@ -73,6 +76,11 @@ function bSafesPreflight(fn) {
             decipher.finish();
             var expandedKey = decipher.output.data;
             data.expandedKey = expandedKey;
+
+						var md = forge.md.sha256.create();
+						md.update(expandedKey);
+						var keyHash = md.digest().toHex();
+						data.keyHash = keyHash;
 
             var publicKey = localStorage.getItem("publicKey");
             data.publicKey = publicKey;

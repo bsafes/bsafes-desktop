@@ -3,6 +3,9 @@ function loadPage(){
 	'use strict';
 	const { ipcRenderer, remote } = require( "electron" );
 
+	var thisDiscovery = localStorage.getItem("encodedGold");
+
+	ipcRenderer.send( "setServerAddr", server_addr );
 	// $.get('https://www.openbsafes.com/m/s/demo', function( data ) {
 	// 	var $div = $(data);
 	// 	var masterId = $div.find('#masterId');

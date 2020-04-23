@@ -5,6 +5,7 @@ const fs = require('fs')
 const ejse = require('ejs-electron')
 const appConfig = require("./config");
 var sqlite3 = require('sqlite3').verbose();
+var BSON = require('bson');
 var databaseFile = 'BSafes.db';
 var db = null;
 var loginUserId;
@@ -18,6 +19,7 @@ let win;
 let thread_win;
 var isThreadview = false;
 
+global.server_addr = null;
 global.sqliteDB = db;
 global.loginUserId = loginUserId;
 global.logMesage = [];
@@ -27,6 +29,46 @@ global.isStopped = false;
 global.isSelectDown = false;
 global.logModal = '';
 
+function dbInsertInfo(url, data, done)
+{ 
+  db = global.sqliteDB
+  var blobData = BSON.serialize(data);
+    
+    var sql = "SELECT id FROM info WHERE url = ?";
+  db.get(sql, url, function(err, row) {
+    if (err) {
+      console.log(err, 'dbInsertInfo')
+			done(err);
+    } else if (row == undefined) {
+      db.run("INSERT INTO info (url, jsonData) VALUES (?, ?)", url, blobData);
+			done(null);
+    } else {
+      db.run("UPDATE info SET jsonData = ? WHERE id = ?", blobData, row.id);
+			done(null);
+    }
+  });
+}
+
+function dbQueryInfo(url, option, fn)
+{
+  db = global.sqliteDB;
+
+  var sql =  "SELECT jsonData AS jd FROM info WHERE url = ? ORDER By id DESC LIMIT 0, 1";
+
+  db.get(sql, [url], function(err, row) {
+    if (err) {
+      console.log(err, 'dbQueryInfo')
+    } else if (row == undefined) {
+      console.log('no items');
+			fn(null);
+    } else {
+      var blobData = row.jd;
+      var data = BSON.deserialize(blobData);
+
+      fn(data);
+    }
+  });
+}
 
 function createWindow () {
   
@@ -66,7 +108,51 @@ function createWindow () {
   //     console.log(cookies);
   // });
   session.cookies.remove('https://www.openbsafes.com', 'connect.sid', function(data) {});
-  
+
+	win.on('close', (event) => {
+		event.preventDefault();
+		function getPreflightInfo() {
+			var server_addr = global.server_addr;
+      return new Promise((resolve, reject) => {
+				if(server_addr === null) {
+					return resolve();
+				}
+        dbQueryInfo(server_addr + '/memberAPI/preflight', {
+          sessionResetRequired: false
+        }, function(data) {
+          if (data && data.status === 'ok') {
+          //  console.log(data);
+						data.encodedGold = null;
+						data.expandedKey = null;
+						data.privateKey = null;
+						data.searchKey = null;
+						dbInsertInfo(server_addr + '/memberAPI/preflight', data, function(err) {
+							if(err) {
+								win.destory();
+								resolve();
+							} else {
+								win.webContents.executeJavaScript('localStorage.clear()', true)
+  							.then((result) => {
+									win.destroy();
+                  resolve();
+  							});
+							}
+						});
+          } else {
+						win.destroy();
+            resolve();
+          }
+        });
+      });
+    }
+
+		async function beforeClosing() {
+  		await getPreflightInfo();
+		}
+		beforeClosing();
+
+	});
+ 
   // Emitted when the window is closed.
   win.on('closed', () => {
     // Dereference the window object, usually you would store windows
@@ -262,6 +348,10 @@ ipcMain.on('show-message', (event, msg) => {
 
 ipcMain.on( "setMyGlobalVariable", ( event, myGlobalVariableValue ) => {
   global.loginUserId = myGlobalVariableValue;
+} );
+
+ipcMain.on( "setServerAddr", ( event, serverAddr ) => {
+  global.server_addr = serverAddr;
 } );
 
 ipcMain.on( "setDownloadStatus", ( event, isStopped ) => {
