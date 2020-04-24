@@ -27,10 +27,12 @@ function loadPage(){
 		var memberName = forge.util.encodeUtf8($('#memberName').val());
 		var password = $('#password').val();
 
-		function getMaserId(done) {
+		function getMasterId(done) {
 
 			$.get(memberLoginURL, function( data ) {
-	    		var $div = $(data);
+				server_addr = "https://" + memberLoginURL.split('https://')[1].split('/')[0];
+				ipcRenderer.send( "setServerAddr", server_addr );
+	    	var $div = $(data);
 				var masterId = $div.find('#masterId');
 				var loginUserId = $div.find('.loginUserId');
 
@@ -55,7 +57,7 @@ function loadPage(){
 
 		}
 
-    	getMaserId(function(masterId) {
+    	getMasterId(function(masterId) {
     		var username = 'm' + ':' + masterId + ':' + memberName;
 			$.post(server_addr + '/authenticateManagedMember', {
 				masterId: masterId,
@@ -66,8 +68,9 @@ function loadPage(){
 		      	if(data.status === 'ok') {
 		      		//window.location.href = "/member/";
 		      		//navigateView('keyEnter.ejs');
-		      		getMaserId( function(loginUserId) {
-
+		      		getMasterId( function(loginUserId) {
+					
+								dbInsertInfo(server_addr + '/memberAPI/getLoginUserId', {status:'ok', loginUserId:loginUserId});
 		      			ipcRenderer.send( "setMyGlobalVariable", loginUserId );
 		      			navigateView('keyEnter.ejs');
 		      		} )

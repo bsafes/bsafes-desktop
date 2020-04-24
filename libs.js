@@ -1,5 +1,5 @@
 
-var server_addr = 'https://www.openbsafes.com'
+var server_addr = 'https://www.bsafes.com'
 var forge = require('node-forge');
 var ejse = require ("electron").remote.require('ejs-electron');
 var BSON = require('bson');
@@ -189,29 +189,36 @@ $('.btnBSafes').click(function(e) {
 
 $('.btnLocal').click(function(e) {
 	e.preventDefault();
-	
-	dbQueryInfo(server_addr + '/memberAPI/preflight', {
- 		sessionResetRequired: false 
- 	}, function(data, textStatus, jQxhr ){
-		if(data && data.status === 'ok'){
-			if(data.keySalt && data.keyHash) {
-				ipcRenderer.send( "setNavigateFolder", 'local' );
-			
-				if(!data.encodedGold) {
-					navigateView('../../Local/views/keyEnter.ejs');
-				} else {
- 					var last_url = localStorage.getItem('local_last_url');
- 					if (last_url) {
- 						navigateView(last_url);
- 					} else {
- 						navigateView('../../Local/views/teams.ejs');
- 					}
-				}
-			} else {
 
-			}
+	dbQueryInfo(server_addr + '/memberAPI/getLoginUserId', {
+	}, function(data, textStatus, jQxhr ){
+		if(data && data.status === 'ok'){
+			var loginUserId = data.loginUserId;
+			ipcRenderer.send( "setMyGlobalVariable", loginUserId );
+  		dbQueryInfo(server_addr + '/memberAPI/preflight', {
+   			 sessionResetRequired: false
+  		}, function(data, textStatus, jQxhr ){
+    		if(data && data.status === 'ok'){
+      		if(data.keySalt && data.keyHash) {
+        		ipcRenderer.send( "setNavigateFolder", 'local' );
+  
+        		if(!data.encodedGold) {
+          		navigateView('../../Local/views/keyEnter.ejs');
+        		} else {
+          		var last_url = localStorage.getItem('local_last_url');
+          		if (last_url) {
+            		navigateView(last_url);
+          		} else {
+            		navigateView('../../Local/views/teams.ejs');
+          		}
+        		}
+      		} else {
+
+      		}
+    		}
+  		});
 		}
-	});
+	});	
 })
 
 $('.btnDownloads').click(function(e) {

@@ -1,5 +1,5 @@
 
-var server_addr = 'https://www.openbsafes.com'
+var server_addr = 'https://www.bsafes.com'
 var forge = require('node-forge');
 var ejse = require ("electron").remote.require('ejs-electron');
 var BSON = require('bson');

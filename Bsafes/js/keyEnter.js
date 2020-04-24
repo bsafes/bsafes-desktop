@@ -13,7 +13,7 @@
 				keySalt = data.keySalt;
 				localStorage.setItem("keySalt", keySalt);
 			} else {
-				alert("System Error: Please reload this page and try again!");
+				alert(server_addr + "System Error: Please reload this page and try again!");
 			}
 		}, 'json');	
 

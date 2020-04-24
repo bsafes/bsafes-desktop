@@ -1,5 +1,5 @@
 
-var server_addr = 'https://www.openbsafes.com'
+var server_addr = 'https://www.bsafes.com'
 var forge = require('node-forge');
 var BSON = require('bson');
 var moment = require('moment');

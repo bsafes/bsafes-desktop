@@ -104,10 +104,10 @@ function createWindow () {
 
   // clear cache.
   let session = win.webContents.session;
-  // session.cookies.get({ url : 'https://www.openbsafes.com' }, function(error, cookies) {
+  // session.cookies.get({ url : 'https://www.bsafes.com' }, function(error, cookies) {
   //     console.log(cookies);
   // });
-  session.cookies.remove('https://www.openbsafes.com', 'connect.sid', function(data) {});
+  session.cookies.remove('https://www.bsafes.com', 'connect.sid', function(data) {});
 
 	win.on('close', (event) => {
 		event.preventDefault();

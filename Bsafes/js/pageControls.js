@@ -40,7 +40,7 @@ var currentImageDownloadXhr = null;
 //console.log('__dirname=', __dirname);
 
 var library_path =  __dirname + '/../../libs/';
-library_path = 'https://developer.openbsafes.com';
+library_path = 'https://www.bsafes.com';
 
 var addr_images = 'http://localhost:8000/stylesheets/images/';
 addr_images = __dirname + '/../../images/';
