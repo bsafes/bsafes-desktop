@@ -89,6 +89,14 @@
     <script src="<%=js_local_path%>keyEnter.js?v0.OB1.0614" integrity="" crossorigin="anonymous"></script>
 <%}%>
 <% } %>
+<% if(typeof(extraMFAJS) !== "undefined" && extraMFAJS)  {%>
+<% if(typeof(developer) !== "undefined" && developer) {%>
+    <script src="http://localhost:8000/javascripts/extraMFA.js?v0.OB1.0614"></script>
+<%} else {%>
+    <script src="<%=js_local_path%>extraMFA.js?v0.OB1.0614" integrity="" crossorigin="anonymous"></script>
+<%}%>
+<% } %>
+
 <% if(typeof(signedOutState) !== "undefined" && signedOutState)  {%>
 <% if(typeof(developer) !== "undefined" && developer) {%>
     <script src="http://localhost:8000/javascripts/signedOutState.js?v0.OB1.0614"></script>
