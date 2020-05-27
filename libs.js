@@ -14,7 +14,7 @@ function makeCallNavigate(link)
 	return href;
 }
 
-function navigateView(goto_view)
+function navigateView(goto_view, options)
 {
 	console.log("Test : " + goto_view);
 	// extract Get Params.
@@ -71,7 +71,7 @@ function navigateView(goto_view)
 	switch (view) {
 		case 'keyEnter.ejs' :
 			ejse.data('redirectURL', 'teams.ejs')
-			ejse.data('keyHint', 'eyHint')
+			ejse.data('keyHint', options)
 			break;
 		case 'team.ejs' :
 			ejse.data('teamId', teamId)

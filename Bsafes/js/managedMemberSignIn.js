@@ -52,6 +52,7 @@ function loadPage(){
 					done(loginUserId);	
 				} else {
 					alert('Can not find masterId and userloginId.');
+					hideLoadingInSignIn();
 					return;	
 				}
 				
@@ -82,7 +83,7 @@ function loadPage(){
 								if(data.extraMFARequired) {
 									navigateView('extraMFA.ejs');
 								} else {
-		      				navigateView('keyEnter.ejs');
+		      				navigateView('keyEnter.ejs', data.keyHint);
 								}	
 		      		} )
 		      		

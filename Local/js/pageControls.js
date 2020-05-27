@@ -2284,7 +2284,6 @@ function attachProgressBar($downloadElement, downloading) {
         $downloadingContainer.append($progress);
         $downloadElementCopy.off();
     } else {
-        //$downloadElementCopy.load(function() {
         $downloadElementCopy.on('load', function() {
             // Once the dummy encrypted image is loaded
             alignProgressPosition();
@@ -2395,7 +2394,6 @@ function downloadVideoObject($videoDownload) {
         attachProgressBar($videoDownload);
     }
 
-    //$.post(server_addr + '/memberAPI/preS3Download', {
     dbQueryDataInPageVideo(server_addr + '/memberAPI/preS3Download', {
         itemId: itemId,
         s3Key: s3Key
@@ -2604,7 +2602,6 @@ function getPageItem(thisItemId, thisExpandedKey, thisPrivateKey, thisSearchKey,
     }
     ;
     function getPageComments() {
-        //$.post(server_addr + '/memberAPI/getPageComments', {
         dbQueryGetPageComments(server_addr + '/memberAPI/getPageComments', {
             itemId: itemId,
             size: 10,
@@ -2627,7 +2624,6 @@ function getPageItem(thisItemId, thisExpandedKey, thisPrivateKey, thisSearchKey,
     if (thisVersion) {
         options.oldVersion = thisVersion;
     }
-    //$.post(server_addr + '/memberAPI/getPageItem', options, function(data, textStatus, jQxhr) {
     dbQueryGetPageItem(server_addr + '/memberAPI/getPageItem', options, function(data, textStatus, jQxhr) {
         if (data.status === 'ok') {
             cleanPageItem();
@@ -2771,7 +2767,6 @@ function getPageItem(thisItemId, thisExpandedKey, thisPrivateKey, thisSearchKey,
                                     var s3CommonKey = $downloadImage.data('s3Key');
                                     var s3Key = s3CommonKey + "_gallery";
 
-                                    //$.post(server_addr + '/memberAPI/preS3Download', {
                                     dbQueryDataInPageIamge(server_addr + '/memberAPI/preS3Download', {
                                         itemId: itemId,
                                         s3Key: s3Key
@@ -3817,16 +3812,12 @@ function initContentView(contentFromeServer)
                 return;
             }
 
-            //$.post(server_addr + '/memberAPI/preS3Download', {
             dbQueryFileInPageOtherTypesContentFiles(server_addr + '/memberAPI/preS3Download', itemId, s3Key
             , function(err, file_name) {
 
-                console.log('call_preS3Download = ', data.status);
                 if (err) {
                     alert('It occurred some error when downloading this page.');
-                } else if (data.status === 'ok') {
-                    var signedURL = data.signedURL;
-                    //console.log('signedURL = ', signedURL);
+                } else {
                     var path = download_folder_path + file_name;
                     fs.stat(path, function(error, stats) {
                         fs.open(path, "r", function(error, fd) {
@@ -3862,59 +3853,6 @@ function initContentView(contentFromeServer)
                             });
                         });
                     });
-
-                    var xhr = new XMLHttpRequest();
-                    xhr.open('GET', signedURL, true);
-                    xhr.responseType = 'arraybuffer';
-
-                    xhr.addEventListener("progress", function(evt) {
-                        if (evt.lengthComputable) {
-                            var percentComplete = evt.loaded / evt.total * 100;
-                            //$downloadImage.find('.progress-bar').css('width', percentComplete + '%');
-                            $downloadContent.find('.progress-bar').css('width', percentComplete + '%');
-                            //console.log('xhr_download progress = ', percentComplete + '%');
-                        }
-                    }, false);
-
-                    xhr.onload = function(e) {
-                        $downloadContent.find('.downloadText').text("Decrypting");
-                        // $downloadImage.find('.downloadText').text("Decrypting");
-                        // currentImageDownloadXhr = null;
-                        var encryptedContentDataInArrayBuffer = this.response;
-                        $.post('/memberAPI/postS3Download', {
-                            itemId: itemId,
-                            s3Key: s3Key
-                        }, function(data, textStatus, jQxhr) {
-                            console.log('call_postS3Download = ', data.status);
-                            if (data.status === 'ok') {
-                                var item = data.item;
-                                var size = item.size;
-
-                                var decryptedContentDataInUint8Array = decryptArrayBuffer(encryptedContentDataInArrayBuffer, itemKey, itemIV);
-                                function ab2str(buf) {
-                                    //return String.fromCharCode.apply(null, new Uint8Array(buf));
-                                    var str = new TextDecoder("utf-8").decode(buf);
-                                    return str;
-                                }
-                                var arraybufferContent = decryptedContentDataInUint8Array;
-                                arraybufferContent = ab2str(arraybufferContent);
-                                content = arraybufferContent;
-                                //console.log('decryptedContentDataInUint8Array = ', decryptedContentDataInUint8Array);
-                                //console.log('arraybufferContent=', arraybufferContent);
-                                done(null);
-                            }
-                        }, 'json');
-
-                    };
-
-                    xhr.onerror = function (e) {
-                        alert('Ooh, please retry! Error occurred when connecing the url : ', signedURL);
-                        //console.log('Ooh, please retry! Error occurred when connecing the url : ', signedURL);
-                    };
-
-                    //xhr.send();
-                    //currentImageDownloadXhr = xhr;
-
                 } 
             }, 'json');
 
@@ -3958,7 +3896,6 @@ function initContentView(contentFromeServer)
         }
         return false;
     }
-
 
 
     //backupContentsInLocalStorage();                

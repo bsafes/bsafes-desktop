@@ -256,6 +256,7 @@ function showPleaseWait() {
                 <div class="modal-content">\
                     <div class="modal-header">\
                         <h4 class="modal-title">Counting pages. Please wait...</h4>\
+												<h6>Later, please click Downloads in the bottom to see downloding progress.</h6>\
                     </div>\
                     <div class="modal-body">\
                         <div class="status">\

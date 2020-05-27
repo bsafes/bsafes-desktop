@@ -8,7 +8,7 @@ function loadPage(){
 			token: token 
 		}, function(data, textStatus, jQxhr) {
       if(data.status === 'ok') {
-				navigateView('keyEnter.ejs');		
+				navigateView('keyEnter.ejs', data.keyHint);		
 			} else {
         alert(data.err);
 				$("#token1").val("");
