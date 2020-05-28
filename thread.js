@@ -108,7 +108,7 @@ function interval() {
           } else {
             saveLog('completed', '', 1);
             var msg = {};
-            msg.msg = 'Complete to downloading items.';
+            msg.msg = 'Done! Click Local tab in the bottom to view downloaded items. ';
             msg.type = 'info';
             ipcRenderer.send("showDialong", msg);
             ipcRenderer.send("selectDownload", false);
