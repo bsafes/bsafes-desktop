@@ -1,5 +1,5 @@
-//var server_addr = 'https://www.bsafes.com'
-var server_addr = 'http://localhost:3000'
+var server_addr = 'https://www.bsafes.com'
+//var server_addr = 'http://localhost:3000'
 var forge = require('node-forge');
 var BSON = require('bson');
 var moment = require('moment');
@@ -738,9 +738,13 @@ function dbQueryItemListSameAjax(ajaxUrl, postData, fn) {
 
 	db.get(sql, [postData.itemId, ajaxUrl], function(err, row) {
 		if (err) {
-			console.log(err, 'dbQueryItemListSameAjax')
+			console.log(err, 'dbQueryItemListSameAjax');
+			var data = {status:"error", err:err};
+			fn(data);	
 		} else if (row == undefined) {
 			console.log('no items');
+			var data = {status:"ok", hits:{total:0}};
+			fn(data)
 		} else {
 			var blobData = row.jd;
 			data = BSON.deserialize(blobData);

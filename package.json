@@ -33,7 +33,7 @@
   },
   "build": {
     "appId": "com.bsafe.desktop",
-    "productName": "BSafes Desktop",
+    "productName": "BSafesDesktop",
     "asar": "false",
     "directories": {
       "buildResources": "build"
