@@ -45,7 +45,7 @@ Steps:
 
 1.	Download and install “yarn”. It is recommended to use yarn instead of npm for the packaging.
 2.	Install electron-builder package by running below script
-yarn add electron-builder --dev
+   $ yarn add electron-builder --dev
 
 3.	Configure package.json file and include “dist” as below
 "scripts": {
@@ -60,8 +60,7 @@ yarn add electron-builder --dev
   },
 
 4.	Run the below command
-
-yarn dist
+   $yarn dist
 
 5.	It will generate artifact in the “dist” folder of project directory
 
@@ -71,8 +70,8 @@ yarn dist
 How to build .deb and .rpm for linux?
  - Clone the repository 
  - Go to root folder of the project
- - Run ​npm install 
- - Run npm run dist 
+ - Run $ npm install 
+ - Run $ npm run dist 
  - After completion, there will be two files in dist folder 
  ==============================================================================
 How to install .deb?
