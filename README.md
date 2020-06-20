@@ -36,8 +36,7 @@ cd bsafes-desktop
 npm install && npm start
 ```
 
-## Packaging Electron App for Windows / MAC    &  Packaging Electron App for Linux:
-
+## Packaging Electron App for Windows / MAC    
 Numerous target formats:
 This works for all platforms. Just run in windows / mac / linux to generate the respective platform.
 The details can be verified in below link
@@ -61,9 +60,12 @@ yarn add electron-builder --dev
   },
 
 4.	Run the below command
+
 yarn dist
 
 5.	It will generate artifact in the “dist” folder of project directory
+
+## Packaging Electron App for Linux:
 
 ==============================================================================
 How to build .deb and .rpm for linux?
