@@ -77,7 +77,7 @@ How to build .deb and .rpm for linux?
 How to install .deb?
  - Click on ​bsafes-Deskop_1.0.0_amd64.deb 
  - After installation, open terminal
- - Run ​sudo chmod 777 -R /opt/BSafes\ Desktop/
+ - Run $ sudo chmod 777 -R /opt/BSafesDesktop/
  - Launch app from application list 
  
 
