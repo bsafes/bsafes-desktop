@@ -108,6 +108,7 @@ function createWindow () {
   //     console.log(cookies);
   // });
   session.cookies.remove('https://www.bsafes.com', 'connect.sid', function(data) {});
+	//session.cookies.remove('http://localhost:3000', 'connect.sid', function(data) {});
 
 	win.on('close', (event) => {
 		event.preventDefault();

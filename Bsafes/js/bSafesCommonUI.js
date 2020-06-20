@@ -256,6 +256,7 @@ function showPleaseWait() {
                 <div class="modal-content">\
                     <div class="modal-header">\
                         <h4 class="modal-title">Counting pages. Please wait...</h4>\
+												<h6>Later, please click Downloads in the bottom to see downloding progress.</h6>\
                     </div>\
                     <div class="modal-body">\
                         <div class="status">\
@@ -1942,7 +1943,7 @@ async function getContainerData(itemId) {
 }
 
 function downloadListAndPage(itemId, fn) {
-  var default_size = 100;
+  var default_size = 20;
   var postData = {};
   var reqUrl = "";
   var type = checkItemType(itemId);
@@ -1962,38 +1963,36 @@ function downloadListAndPage(itemId, fn) {
     db_fn = dbInsertTeams;
   }
 
-  $.post(
-    reqUrl,
-    postData,
-    function(data, textStatus, jQxhr) {
-      if (data.status === "ok") {
-        // get full item list.
-        if (data.hits.total > default_size) {
-          $.post(
-            reqUrl,
-            {
-              size: data.hits.total,
-              from: 0
-            },
-            function(total_data, textStatus, jQxhr) {
-              if (total_data.status === "ok") {
-                db_fn(reqUrl, itemId, total_data, isDownload);
-                callback_fn(total_data.hits.hits);
-              } else {
-                console.log("err:(" + reqUrl + ")", total_data);
-              }
-            }
-          );
-        } else {
-          db_fn(reqUrl, itemId, data, isDownload);
-          callback_fn(data.hits.hits);
-        }
-      }
-    },
-    "json"
-  ).fail(function(jqXHR, textStatus, errorThrown) {
-    processErrorsInSelecting(jqXHR);
-  });
+	var pageNumber = 1;
+	var hits = [];
+
+	function getContentsPage() {
+		postData.from = (pageNumber - 1) * default_size;
+  
+		$.post(
+    	reqUrl,
+    	postData,
+    	function(data, textStatus, jQxhr) {
+      	if (data.status === "ok") {
+					for(var i=0; i < data.hits.hits.length; i++) {
+						hits.push(data.hits.hits[i]);
+					}  
+        	if (data.hits.total > (pageNumber * default_size)) {
+						pageNumber ++;
+						getContentsPage();
+        	} else {
+						var totalData = {status: "ok", hits:{total: hits.length, hits: hits}};
+          	db_fn(reqUrl, itemId, totalData, isDownload);
+          	callback_fn(hits);
+        	}
+      	}
+    	},
+    	"json"
+  	).fail(function(jqXHR, textStatus, errorThrown) {
+    	processErrorsInSelecting(jqXHR);
+  	});
+	}
+	getContentsPage();
 }
 
 async function setContainerAndTeamOfPage(pageId) {

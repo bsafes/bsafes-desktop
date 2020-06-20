@@ -30,7 +30,13 @@ function loadPage(){
 		function getMasterId(done) {
 
 			$.get(memberLoginURL, function( data ) {
-				server_addr = "https://" + memberLoginURL.split('https://')[1].split('/')[0];
+				if(memberLoginURL.startsWith('https://')) {
+					server_addr = "https://" + memberLoginURL.split('https://')[1].split('/')[0];
+				} else if(memberLoginURL.startsWith('http://localhost:3000')) { 
+					server_addr = "http://" + memberLoginURL.split('http://')[1].split('/')[0];
+				} else {
+					alert("Invlaid URL");
+				}
 				ipcRenderer.send( "setServerAddr", server_addr );
 	    	var $div = $(data);
 				var masterId = $div.find('#masterId');
@@ -46,6 +52,7 @@ function loadPage(){
 					done(loginUserId);	
 				} else {
 					alert('Can not find masterId and userloginId.');
+					hideLoadingInSignIn();
 					return;	
 				}
 				
@@ -53,6 +60,7 @@ function loadPage(){
 			})
 	    	.fail(function(jqXHR, textStatus, errorThrown){
 				showErrorMessage(jqXHR);
+				hideLoadingInSignIn();
 			});
 
 		}
@@ -72,7 +80,11 @@ function loadPage(){
 					
 								dbInsertInfo(server_addr + '/memberAPI/getLoginUserId', {status:'ok', loginUserId:loginUserId});
 		      			ipcRenderer.send( "setMyGlobalVariable", loginUserId );
-		      			navigateView('keyEnter.ejs');
+								if(data.extraMFARequired) {
+									navigateView('extraMFA.ejs');
+								} else {
+		      				navigateView('keyEnter.ejs', data.keyHint);
+								}	
 		      		} )
 		      		
 		      	} else {

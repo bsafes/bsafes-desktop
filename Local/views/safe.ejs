@@ -40,11 +40,11 @@
 			<% include copyLink %>
       <div class="row">
         <div class="col-xs-12 col-xs-offset-0 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 text-center">
-          <a href="/activities/" id="activitiesLink">Activities</a>
+          <a href="/activities/" id="activitiesLink" class="hidden">Activities</a>
         </div>
       </div>
 
-			<div class="row">
+			<div class="row hidden">
         <div class="col-xs-12 col-xs-offset-0 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
 					<div class="form-group">
   					<div class="input-group">
@@ -56,7 +56,7 @@
 					</div>	
 				</div>
       </div>
-      <div class="addAnItemRow row">
+      <div class="addAnItemRow row hidden">
         <div class="col-xs-12 col-xs-offset-0 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 text-center">
         	<button class="btn btn-primary btn-circle" data-toggle="modal" data-target="#newItemOptionsModal" type="button" id="addAnItemBtn"><i class="fa fa-plus fa-lg" aria-hidden="true"></i></button>
 				</div>
@@ -99,7 +99,7 @@
 											<p class="itemTitle blackText fontSize130Percent">Hello World</p>
 										</div>
 									</a>
-									<div class="col-xs-3">
+									<div class="col-xs-3 hidden">
 										<div class="btn-group pull-right">
 											<button class="itemControl addItemBtn dropdown-toggle btn btn-link btn-xs" data-toggle="dropdown" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button>
                    		<ul class="dropdown-menu">
