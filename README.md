@@ -36,8 +36,7 @@ cd bsafes-desktop
 npm install && npm start
 ```
 
-## Packaging Electron App for Windows / MAC    &  Packaging Electron App for Linux:
-
+## Packaging Electron App for Windows / MAC    
 Numerous target formats:
 This works for all platforms. Just run in windows / mac / linux to generate the respective platform.
 The details can be verified in below link
@@ -46,7 +45,7 @@ Steps:
 
 1.	Download and install “yarn”. It is recommended to use yarn instead of npm for the packaging.
 2.	Install electron-builder package by running below script
-yarn add electron-builder --dev
+   $ yarn add electron-builder --dev
 
 3.	Configure package.json file and include “dist” as below
 "scripts": {
@@ -61,22 +60,24 @@ yarn add electron-builder --dev
   },
 
 4.	Run the below command
-yarn dist
+   $yarn dist
 
 5.	It will generate artifact in the “dist” folder of project directory
+
+## Packaging Electron App for Linux:
 
 ==============================================================================
 How to build .deb and .rpm for linux?
  - Clone the repository 
  - Go to root folder of the project
- - Run ​npm install 
- - Run npm run dist 
+ - Run $ npm install 
+ - Run $ npm run dist 
  - After completion, there will be two files in dist folder 
  ==============================================================================
 How to install .deb?
  - Click on ​bsafes-Deskop_1.0.0_amd64.deb 
  - After installation, open terminal
- - Run ​sudo chmod 777 -R /opt/BSafes\ Desktop/
+ - Run $ sudo chmod 777 -R /opt/BSafesDesktop/
  - Launch app from application list 
  
 
