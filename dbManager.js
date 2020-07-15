@@ -830,7 +830,7 @@ function dbQueryGetContainerContents(ajaxUrl, postData, fn)
 					}
 				});
 				data.hits.total = out_hits.length;
-				data.hits.hits = out_hits.slice(postData.from, postData.size + 1);
+				data.hits.hits = out_hits.slice(postData.from, postData.from + postData.size);
 				//data.hits.total = arr_tmp.length;
 
 				fn(data);
