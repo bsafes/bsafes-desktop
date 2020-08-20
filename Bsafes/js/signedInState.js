@@ -9,11 +9,14 @@
 
 	var bsafes_last_url = localStorage.getItem("bsafes_last_url"); 
 	var local_last_url = localStorage.getItem("local_last_url");
+	var antiCSRF = localStorage.getItem("antiCSRF");
 	localStorage.clear();	
+	localStorage.setItem("antiCSRF", antiCSRF);
 	localStorage.setItem("bsafes_last_url", bsafes_last_url); 
 	localStorage.setItem("local_last_url", local_last_url);
 
 	$.post(server_addr + '/isMemberSignedIn', {
+		antiCSRF: bSafesCommonUIObj.antiCSRF
 	}, function(data, textStatus, jQxhr ){
 		if(data.status === 'yes') {
 			localStorage.setItem("isSignedIn", "true");

@@ -248,7 +248,8 @@ function loadPage(){
 		$.post(server_addr + '/memberAPI/listActivities', {
 			space: currentSpace,
 			size: itemsPerPage ,
-			from: (pageNumber - 1) * itemsPerPage
+			from: (pageNumber - 1) * itemsPerPage,
+			antiCSRF: bSafesCommonUIObj.antiCSRF
 		}, function(data, textStatus, jQxhr) {
 			if(data.status === 'ok') {
 				var total = data.hits.total;

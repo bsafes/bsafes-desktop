@@ -1177,7 +1177,8 @@
 
 				function preS3Upload(fn) {
 					$.post('/memberAPI/preS3Upload', {
-						type: 'video'
+						type: 'video',
+						antiCSRF: bSafesCommonUIObj.antiCSRF
 					}, function(data, textStatus, jQxhr) {
 						if(data.status === 'ok') {
               s3Key = data.s3Key;

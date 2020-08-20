@@ -76,6 +76,9 @@ function loadPage(){
 		      	if(data.status === 'ok') {
 		      		//window.location.href = "/member/";
 		      		//navigateView('keyEnter.ejs');
+
+							localStorage.setItem("antiCSRF", data.antiCSRF);
+
 		      		getMasterId( function(loginUserId) {
 					
 								dbInsertInfo(server_addr + '/memberAPI/getLoginUserId', {status:'ok', loginUserId:loginUserId});

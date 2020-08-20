@@ -145,7 +145,7 @@ function loadPage(){
 			thisMember.initialLetter = $('#memberName').val().charAt(0);
 			thisMember.memberName = forge.util.encodeUtf8($('#memberName').val());	
   		thisMember.password = newManagedMemberPassword;
-	
+			thisMember.antiCSRF = bSafesCommonUIObj.antiCSRF;	
 			$.post(server_addr + '/memberAPI/addAManagedMember',
 				thisMember,
 				function(data, textStatus, jQxhr) {
@@ -197,7 +197,8 @@ function loadPage(){
       $.post(server_addr + '/memberAPI/deleteAManagedMember', { 
 				memberId: memberId,
         masterId: masterId,
-				memberName: memberName   
+				memberName: memberName,
+				antiCSRF: bSafesCommonUIObj.antiCSRF   
       }, function(data, textStatus, jQxhr) { 
         hideLoadingInDeleteModal(); 
         $('#deleteModal').modal('hide'); 
@@ -259,7 +260,8 @@ function loadPage(){
 		$('.resultItems').empty();
 		$.post(server_addr + '/memberAPI/listManagedMembers', {
       size: 20,
-      from: 0
+      from: 0,
+			antiCSRF: bSafesCommonUIObj.antiCSRF
     }, function(data, textStatus, jQxhr) {
 			if(data.status === 'ok') {
 				var total = data.hits.total;

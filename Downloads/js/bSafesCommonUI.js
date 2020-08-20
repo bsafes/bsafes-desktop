@@ -44,9 +44,22 @@
   	return dateStr;
 	}
 
+	function getAntiCSRF() {
+  	var antiCSRF = localStorage.getItem("antiCSRF");
+  	return antiCSRF;
+	}
+
+	var bSafesCommonUIObj = {
+  	currentItem: {
+    	path:[]
+  	},
+  	antiCSRF: getAntiCSRF()
+	}
+
 	function getPath(itemId, pageId, done) {
 		$.post(server_addr + '/memberAPI/getItemPath', {
-      itemId: itemId
+      itemId: itemId,
+			antiCSRF: bSafesCommonUIObj.antiCSRF
     }, function(data, textStatus, jQxhr) {
       if(data.status === 'ok') {
 				var path = data.itemPath;
@@ -163,7 +176,8 @@
 
   function getAndShowPath(itemId, envelopeKey, teamName, endItemTitle) {
 		$.post(server_addr + '/memberAPI/getItemPath', {
-			itemId: itemId 
+			itemId: itemId,
+			antiCSRF: bSafesCommonUIObj.antiCSRF
     }, function(data, textStatus, jQxhr) {
       if(data.status === 'ok') {
 				showPath(teamName, data.itemPath, itemId, envelopeKey, null ,endItemTitle);
@@ -401,7 +415,8 @@
       $.post(server_addr + '/memberAPI/getItemVersionsHistory', {
         itemId: itemId,
         size: 20,
-        from: 0
+        from: 0,
+				antiCSRF: bSafesCommonUIObj.antiCSRF
       }, function(data, textStatus, jQxhr) {
         if(data.status === 'ok') {
           var total = data.hits.total;
@@ -625,7 +640,8 @@
 	function getNextItemInContainer(container, position, done) {
 		$.post(server_addr + '/memberAPI/getNextItemInContainer', {
 			container: container,
-			position: position
+			position: position,
+			antiCSRF: bSafesCommonUIObj.antiCSRF
 		}, function(data, textStatus, jQxhr) {
 			if(data.status === 'ok') {
 				var itemId = data.itemId;
@@ -641,7 +657,8 @@
 	function getPreviousItemInContainer(container, position, done) {
     $.post(server_addr + '/memberAPI/getPreviousItemInContainer', {
       container: container,
-      position: position
+      position: position,
+			antiCSRF: bSafesCommonUIObj.antiCSRF
     }, function(data, textStatus, jQxhr) {
       if(data.status === 'ok') {
         var itemId = data.itemId;
@@ -656,7 +673,8 @@
 
 	function getFirstItemInContainer(container, done) {
 		$.post(server_addr + '/memberAPI/getFirstItemInContainer', {
-			container: container
+			container: container,
+			antiCSRF: bSafesCommonUIObj.antiCSRF
 		}, function(data, textStatus, jQxhr) {
 			if(data.status === 'ok') {
 				var itemId = null;
@@ -673,7 +691,8 @@
 	
 	function getLastItemInContainer(container, done) {
     $.post(server_addr + '/memberAPI/getLastItemInContainer', {
-      container: container
+      container: container,
+			antiCSRF: bSafesCommonUIObj.antiCSRF
     }, function(data, textStatus, jQxhr) {
       if(data.status === 'ok') {
 				var itemId = null;
@@ -695,7 +714,8 @@
 		$('.resultItems').empty();
 		$.post(server_addr + '/memberAPI/listItemsCloseToAndAfterItem', {
 			container: targetContainer,
-			position: targetPosition 
+			position: targetPosition,
+			antiCSRF: bSafesCommonUIObj.antiCSRF
 		}, function(data, textStatus, jQxhr) {
       if(data.status === 'ok') {
         var hits = data.hits;
@@ -751,7 +771,8 @@
       targetContainer: $targetItem.data('container'),
       items: JSON.stringify(selectedItemsInContainer),
       targetItem: targetItemId,
-      targetPosition: $targetItem.data('position')
+      targetPosition: $targetItem.data('position'),
+			antiCSRF: bSafesCommonUIObj.antiCSRF
     }, function(data, textStatus, jQxhr) {
       if(data.status === 'ok') {
         selectedItemsInContainer.length = 0;
@@ -1007,6 +1028,7 @@ function createANewItem(currentContainer, selectedItemType, addAction, $addTarge
 			$('#listAllItems').trigger('click');
 		};
 
+		addActionOptions.antiCSRF = bSafesCommonUIObj.antiCSRF;
     var thisAddAction = addAction;
     $.post(server_addr + '/memberAPI/' + addAction,
       addActionOptions,
@@ -1051,7 +1073,8 @@ function listContainers(itemId, itemTitle) {
 	$.post(server_addr + '/memberAPI/listContainers', {
     container: itemId,
     size: containersPerPage,
-    from: (containersPageNumber -1) * containersPerPage
+    from: (containersPageNumber -1) * containersPerPage,
+		antiCSRF: bSafesCommonUIObj.antiCSRF
   }, function(data, textStatus, jQxhr) {
     if(data.status === 'ok') {
 			var containers = data.hits.hits;
@@ -1084,7 +1107,8 @@ function listContainers(itemId, itemTitle) {
 				$.post(server_addr + '/memberAPI/listContainers', {
       		container: thisItemId,
       		size: containersPerPage,
-      		from: 0 
+      		from: 0,
+					antiCSRF: bSafesCommonUIObj.antiCSRF
     		}, function(data, textStatus, jQxhr) {
 						if(data.status === 'ok') {
 							currentTargetContainer = thisItemId;
@@ -1260,7 +1284,8 @@ function showMoveItemsModal(thisSpace) {
 		$.post(server_addr + '/memberAPI/dropItemsInside', {
 			space: currentSpace,
 			items: JSON.stringify(selectedItemsInContainer),
-			targetItem: currentTargetContainer
+			targetItem: currentTargetContainer,
+			antiCSRF: bSafesCommonUIObj.antiCSRF
 		}, function(data, textStatus, jQxhr) {
 			hideLoadingInMoveItemsModal();
 			if(data.status === 'ok') {
@@ -1300,7 +1325,8 @@ function showTrashItemsModal(thisSpace, originalContainer) {
 		$.post(server_addr + '/memberAPI/trashItems', {
 			items: JSON.stringify(selectedItemsInContainer),
 			targetSpace: thisSpace,
-			originalContainer: originalContainer 
+			originalContainer: originalContainer,
+			antiCSRF: bSafesCommonUIObj.antiCSRF
 		}, function(data, textStatus, jQxhr) {
 			hideLoadingInTrashModal();
 			if(data.status === 'ok') {
@@ -1336,7 +1362,8 @@ function hideTrashItemsModal() {
 /*-- Commons for Team */
 function getTeamData(teamId, done) {
 	$.post(server_addr + '/memberAPI/getTeamData', {
-		teamId: teamId
+		teamId: teamId,
+		antiCSRF: bSafesCommonUIObj.antiCSRF
 	}, function(data, textStatus, jQxhr) {
 		if(data.status === 'ok') {
 			done(null, data.team);

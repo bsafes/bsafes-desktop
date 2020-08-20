@@ -1,6 +1,9 @@
 var __sliceLength = 512 * 1024;
 var __encryptedDataSliceSize = 524304;
 
+var bSafesCommonObj = {
+	antiCSRF: localStorage.getItem("antiCSRF")
+}
 var isSigningOutFunc;
 
 function setCommonFunctions(funcKey, thisFunc) {
@@ -51,7 +54,8 @@ function bSafesPreflight(fn) {
         sessionResetRequired = true
     }
     $.post(server_addr + '/memberAPI/preflight', {
-        sessionResetRequired: sessionResetRequired
+        sessionResetRequired: sessionResetRequired,
+				antiCSRF: bSafesCommonObj.antiCSRF
     }, function(data, textStatus, jQxhr) {
 
         if (data.status === 'ok') {

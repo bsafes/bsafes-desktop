@@ -115,7 +115,8 @@ function loadPage(){
       "envelopeIV": envelopeIV,
 			"ivEnvelopeIV": ivEnvelopeIV,
       "title": encryptedTitle,
-      "titleTokens": JSON.stringify(titleTokens)
+      "titleTokens": JSON.stringify(titleTokens),
+			antiCSRF: bSafesCommonUIObj.antiCSRF
     };		
 		
 		var thisAddAction = addAction;
@@ -211,7 +212,8 @@ function loadPage(){
 		$.post(server_addr + '/memberAPI/getNextFolderPage', {
 			folderId: folderId,
 			itemId: itemId,
-			itemPosition: itemPosition
+			itemPosition: itemPosition,
+			antiCSRF: bSafesCommonUIObj.antiCSRF
 		}, function(data, textStatus, jQxhr) {
       if(data.status === 'ok') {
 				var itemId = data.itemId;
@@ -236,7 +238,8 @@ function loadPage(){
     $.post(server_addr + '/memberAPI/getPreviousFolderPage', {
       folderId: folderId,
       itemId: itemId,
-      itemPosition: itemPosition
+      itemPosition: itemPosition,
+			antiCSRF: bSafesCommonUIObj.antiCSRF
     }, function(data, textStatus, jQxhr) {
       if(data.status === 'ok') {
         var itemId = data.itemId;

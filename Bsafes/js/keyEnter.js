@@ -8,6 +8,7 @@
 	var keySalt;
 
 	$.post(server_addr + '/memberAPI/keyEnterPreflight', {
+			antiCSRF: bSafesCommonUIObj.antiCSRF
 		}, function(data, textStatus, jQxhr ){
 			if(data.status === 'ok') {
 				keySalt = data.keySalt;
@@ -32,7 +33,8 @@
 		md.update(expandedKey);
 		var keyHash = md.digest().toHex();
 		$.post(server_addr + '/memberAPI/verifyKeyHash', {
-				"keyHash": keyHash
+				"keyHash": keyHash,
+				antiCSRF: bSafesCommonUIObj.antiCSRF
 			},function(data, textStatus, jQxhr ){
 				console.log(data);
 				hideV5LoadingIn($('.keyForm'));
@@ -64,7 +66,8 @@
 						md.update(randomMessage, 'utf8');
 						var signature = privateKeyFromPem.sign(md);
 						$.post(server_addr + '/memberAPI/secondFactorAuth', {
-							signature: signature
+							signature: signature,
+							antiCSRF: bSafesCommonUIObj.antiCSRF
 						}, function(data , textStatus, jQxr) {
               				if(data.status === 'ok') {
 								localStorage.setItem("encodedSearchKeyEnvelope", searchKeyEnvelope);
@@ -86,7 +89,8 @@
 						secondFactorAuth()
 						$.post(server_addr + '/memberAPI/setupSearchKey', {
 							searchKeyIV: searchKeyIV,
-							searchKeyEnvelope: searchKeyEnvelope
+							searchKeyEnvelope: searchKeyEnvelope,
+							antiCSRF: bSafesCommonUIObj.antiCSRF
 						}, function(data , textStatus, jQxr) {
 							if(data.status === 'ok') {
 								secondFactorAuth();				

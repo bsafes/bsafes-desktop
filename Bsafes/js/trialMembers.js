@@ -22,7 +22,8 @@
     var lastFour = $('#searchInput').val();
     $('.resultItems').empty();
     $.post(server_addr + '/searchTrialMemberByLastFour', {
-      lastFour: lastFour
+      lastFour: lastFour,
+			antiCSRF: bSafesCommonUIObj.antiCSRF
     }, function(data, textStatus, jQxhr ){
       if(data.status === 'ok') {
         var hits = data.hits.hits;
@@ -51,7 +52,8 @@
 	function listTrialMembers() {
 		$.post(server_addr + '/listTrialMembers', {
 			from: from,
-			size: size
+			size: size,
+			antiCSRF: bSafesCommonUIObj.antiCSRF
 		}, function(data, textStatus, jQxhr ){
 			if(data.status === 'ok') {
 				var total = data.hits.total;

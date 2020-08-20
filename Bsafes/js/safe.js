@@ -179,7 +179,8 @@ function loadPage() {
             teamSpace: currentSpace,
             searchTokens: searchTokensStr,
             size: itemsPerPage,
-            from: (pageNumber - 1) * itemsPerPage
+            from: (pageNumber - 1) * itemsPerPage,
+						antiCSRF: bSafesCommonUIObj.antiCSRF
         }, function(data, textStatus, jQxhr) {
             if (data.status === 'ok') {
                 currentContentsPage = pageNumber;
@@ -293,7 +294,8 @@ function loadPage() {
         $.post(server_addr + '/memberAPI/listItems', {
             container: currentSpace,
             size: itemsPerPage,
-            from: (pageNumber - 1) * itemsPerPage
+            from: (pageNumber - 1) * itemsPerPage,
+						antiCSRF: bSafesCommonUIObj.antiCSRF
         }, function(data, textStatus, jQxhr) {
             if (data.status === 'ok') {
                 // get full team list.
@@ -301,7 +303,8 @@ function loadPage() {
                   $.post(server_addr + '/memberAPI/listItems', {
                     container: currentSpace,
                     size: data.hits.total,
-                    from: 0
+                    from: 0,
+										antiCSRF: bSafesCommonUIObj.antiCSRF
                   }, function(total_data, textStatus, jQxhr) {
                     if (total_data.status === 'ok') {
                       dbInsertTeams(server_addr + '/memberAPI/listItems', teamId, total_data);

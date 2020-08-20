@@ -90,7 +90,8 @@ function loadPage(){
     $.post(server_addr + '/memberAPI/getContainerContents',{ 
       itemId: trashBoxId, 
       size: itemsPerPage, 
-      from: (pageNumber -1) * itemsPerPage  
+      from: (pageNumber -1) * itemsPerPage,
+			antiCSRF: bSafesCommonUIObj.antiCSRF
     }, function(data, textStatus, jQxhr ){ 
       if(data.status === 'ok') { 
 				deselectItems(null);
@@ -153,7 +154,8 @@ function loadPage(){
 		} else {
 			$.post(server_addr + '/memberAPI/restoreItemsFromTrash', {
 				teamSpace: teamSpace,
-				selectedItems:JSON.stringify(selectedItems)
+				selectedItems:JSON.stringify(selectedItems),
+				antiCSRF: bSafesCommonUIObj.antiCSRF
 			}, function(data, textStatus, jQxhr) {
 				if(data.status === 'ok') {
 					setTimeout(function() {
@@ -184,7 +186,8 @@ function loadPage(){
 
 		$.post(server_addr + '/memberAPI/restoreItemsFromTrash', {
       teamSpace: teamSpace,
-      selectedItems:JSON.stringify(selectedItems)
+      selectedItems:JSON.stringify(selectedItems),
+			antiCSRF: bSafesCommonUIObj.antiCSRF
     }, function(data, textStatus, jQxhr) {
       if(data.status === 'ok') {
         setTimeout(function() {
@@ -204,7 +207,8 @@ function loadPage(){
 		selectedItems.push(trashedItem);
 		$.post(server_addr + '/memberAPI/emptyTrashBoxItems', {
 			teamSpace: teamSpace,
-			selectedItems:JSON.stringify(selectedItems)
+			selectedItems:JSON.stringify(selectedItems),
+			antiCSRF: bSafesCommonUIObj.antiCSRF
 		}, function(data, textStatus, jQxhr) {
       if(data.status === 'ok') {
         setTimeout(function() {
@@ -223,7 +227,8 @@ function loadPage(){
 		showLoadingInTrashBox();
 		$.post(server_addr + '/memberAPI/emptyTrashBoxItems', {
       teamSpace: teamSpace,
-      selectedItems:JSON.stringify(currentSelectedItems)
+      selectedItems:JSON.stringify(currentSelectedItems),
+			antiCSRF: bSafesCommonUIObj.antiCSRF
     }, function(data, textStatus, jQxhr) {
       if(data.status === 'ok') {
         setTimeout(function() {

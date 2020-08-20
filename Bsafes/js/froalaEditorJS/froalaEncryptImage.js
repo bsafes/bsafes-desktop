@@ -968,6 +968,7 @@
 				
  		      function preS3Upload(fn) {
           	$.post('/memberAPI/preS3Upload', {
+							antiCSRF: bSafesCommonUIObj.antiCSRF
           	}, function(data, textStatus, jQxhr) {
             	if(data.status === 'ok') {
               	s3Key = data.s3Key;
@@ -1141,7 +1142,8 @@
                 "ivEnvelope": ivEnvelope,
                 "envelopeIV": envelopeIV,
 								"ivEnvelopeIV": ivEnvelopeIV, 
-                "size": s3ObjectSize
+                "size": s3ObjectSize,
+								antiCSRF: bSafesCommonUIObj.antiCSRF
               }, function(data, textStatus, jQxhr) {
                 if(data.status === 'ok') {
                   fn(null);

@@ -147,7 +147,8 @@ function loadPage(){
 		var options = {itemId: itemId};
 		if(thisVersion) {
       options.oldVersion = thisVersion;
-    }	
+    }
+		options.antiCSRF = bSafesCommonUIObj.antiCSRF;	
     $.post(server_addr + '/memberAPI/getItemData',
    		options 
     , function(data, textStatus, jQxhr ){
@@ -666,7 +667,8 @@ function loadPage(){
 			container: itemId,
       searchTokens: searchTokensStr,
       size: itemsPerPage,
-      from: (pageNumber -1) * itemsPerPage
+      from: (pageNumber -1) * itemsPerPage,
+			antiCSRF: bSafesCommonUIObj.antiCSRF
     }, function(data, textStatus, jQxhr) {
       if(data.status === 'ok') {
         currentContentsPage = pageNumber;
@@ -768,7 +770,8 @@ function loadPage(){
 		$.post(server_addr + '/memberAPI/getContainerContents',{
 			itemId: itemId,
 			size: itemsPerPage,
-			from:	(pageNumber -1) * itemsPerPage 
+			from:	(pageNumber -1) * itemsPerPage,
+			antiCSRF: bSafesCommonUIObj.antiCSRF
 		}, function(data, textStatus, jQxhr ){
 			hideLoadingContents();
 			if(data.status === 'ok') {
@@ -777,7 +780,8 @@ function loadPage(){
         if (data.hits.total > itemsPerPage) {
           $.post(server_addr + '/memberAPI/getContainerContents', {
             size: data.hits.total,
-            from: 0
+            from: 0,
+						antiCSRF: bSafesCommonUIObj.antiCSRF
           }, function(total_data, textStatus, jQxhr) {
             if(total_data.status === 'ok') {
               dbInsertContainers(server_addr + '/memberAPI/getContainerContents', itemId, total_data);
@@ -916,7 +920,8 @@ function loadPage(){
       size: 31,
       from: 0,
 			selectedDiaryContentStartPosition: selectedDiaryContentStartPosition,
-			selectedDiaryContentEndPosition: selectedDiaryContentEndPosition 
+			selectedDiaryContentEndPosition: selectedDiaryContentEndPosition,
+			antiCSRF: bSafesCommonUIObj.antiCSRF 
     }, function(data, textStatus, jQxhr ){
 			hideLoadingContents();
       if(data.status === 'ok') {

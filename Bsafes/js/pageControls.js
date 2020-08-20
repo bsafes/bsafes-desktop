@@ -355,7 +355,8 @@ function initializeTagsInput() {
                     "envelopeIV": forge.util.encode64(envelopeIV),
                     "ivEnvelopeIV": forge.util.encode64(ivEnvelopeIV),
                     tags: JSON.stringify(encryptedTags),
-                    tagsTokens: JSON.stringify(tagsTokens)
+                    tagsTokens: JSON.stringify(tagsTokens),
+										antiCSRF: bSafesCommonUIObj.antiCSRF
                 }
                 $.post(server_addr + '/memberAPI/addAnItemAfter', addActionOptions, function(data, textStatus, jQxhr) {
                     if (data.status === 'ok') {
@@ -378,7 +379,8 @@ function initializeTagsInput() {
                     "envelopeIV": forge.util.encode64(envelopeIV),
                     "ivEnvelopeIV": forge.util.encode64(ivEnvelopeIV),
                     tags: JSON.stringify(encryptedTags),
-                    tagsTokens: JSON.stringify(tagsTokens)
+                    tagsTokens: JSON.stringify(tagsTokens),
+										antiCSRF: bSafesCommonUIObj.antiCSRF
                 }, function(data, textStatus, jQxhr) {
                     if (data.status === 'ok') {
                         itemCopy = data.item;
@@ -395,7 +397,8 @@ function initializeTagsInput() {
                     "envelopeIV": forge.util.encode64(envelopeIV),
                     "ivEnvelopeIV": forge.util.encode64(ivEnvelopeIV),
                     tags: JSON.stringify(encryptedTags),
-                    tagsTokens: JSON.stringify(tagsTokens)
+                    tagsTokens: JSON.stringify(tagsTokens),
+										antiCSRF: bSafesCommonUIObj.antiCSRF
                 }, function(data, textStatus, jQxhr) {
                     if (data.status === 'ok') {
                         itemCopy = data.item;
@@ -658,7 +661,8 @@ function saveTitle() {
                 "envelopeIV": forge.util.encode64(envelopeIV),
                 "ivEnvelopeIV": forge.util.encode64(ivEnvelopeIV),
                 "title": forge.util.encode64(encryptedTitle),
-                "titleTokens": JSON.stringify(titleTokens)
+                "titleTokens": JSON.stringify(titleTokens),
+								antiCSRF: bSafesCommonUIObj.antiCSRF
             }
 
             $.ajax({
@@ -702,7 +706,8 @@ function saveTitle() {
                     "envelopeIV": forge.util.encode64(envelopeIV),
                     "ivEnvelopeIV": forge.util.encode64(ivEnvelopeIV),
                     "title": forge.util.encode64(encryptedTitle),
-                    "titleTokens": JSON.stringify(titleTokens)
+                    "titleTokens": JSON.stringify(titleTokens),
+										antiCSRF: bSafesCommonUIObj.antiCSRF
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     $('.btnSave').LoadingOverlay('hide');
@@ -731,7 +736,8 @@ function saveTitle() {
                     "envelopeIV": forge.util.encode64(envelopeIV),
                     "ivEnvelopeIV": forge.util.encode64(ivEnvelopeIV),
                     "title": forge.util.encode64(encryptedTitle),
-                    "titleTokens": JSON.stringify(titleTokens)
+                    "titleTokens": JSON.stringify(titleTokens),
+										antiCSRF: bSafesCommonUIObj.antiCSRF
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     $('.btnSave').LoadingOverlay('hide');
@@ -854,7 +860,8 @@ function saveContent() {
                 "ivEnvelopeIV": forge.util.encode64(ivEnvelopeIV),
                 "content": forge.util.encode64(encryptedContent),
                 "s3ObjectsInContent": JSON.stringify(s3ObjectsInContent),
-                "s3ObjectsSizeInContent": s3ObjectsSize
+                "s3ObjectsSizeInContent": s3ObjectsSize,
+								antiCSRF: bSafesCommonUIObj.antiCSRF
             }
 
             $.ajax({
@@ -899,7 +906,8 @@ function saveContent() {
                     "ivEnvelopeIV": forge.util.encode64(ivEnvelopeIV),
                     "content": forge.util.encode64(encryptedContent),
                     "s3ObjectsInContent": JSON.stringify(s3ObjectsInContent),
-                    "s3ObjectsSizeInContent": s3ObjectsSize
+                    "s3ObjectsSizeInContent": s3ObjectsSize,
+										antiCSRF: bSafesCommonUIObj.antiCSRF
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     $('.btnSave').LoadingOverlay('hide');
@@ -929,7 +937,8 @@ function saveContent() {
                     "ivEnvelopeIV": forge.util.encode64(ivEnvelopeIV),
                     "content": forge.util.encode64(encryptedContent),
                     "s3ObjectsInContent": JSON.stringify(s3ObjectsInContent),
-                    "s3ObjectsSizeInContent": s3ObjectsSize
+                    "s3ObjectsSizeInContent": s3ObjectsSize,
+										antiCSRF: bSafesCommonUIObj.antiCSRF
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     $('.btnSave').LoadingOverlay('hide');
@@ -974,7 +983,8 @@ function saveNewComment() {
         itemCopy.content = encryptedContent;
         $.post(server_addr + '/memberAPI/saveNewPageComment', {
             itemId: itemId,
-            content: forge.util.encode64(encryptedContent)
+            content: forge.util.encode64(encryptedContent),
+						antiCSRF: bSafesCommonUIObj.antiCSRF
         }, function(data, textStatus, jQxhr) {
             if (data.status === 'ok') {
 
@@ -1024,7 +1034,8 @@ function updateComment() {
         $.post(server_addr + '/memberAPI/updatePageComment', {
             itemId: itemId,
             commentId: commentId,
-            content: forge.util.encode64(encryptedContent)
+            content: forge.util.encode64(encryptedContent),
+						antiCSRF: bSafesCommonUIObj.antiCSRF
         }, function(data, textStatus, jQxhr) {
             if (data.status === 'ok') {
                 var lastUpdateTime = "Updated, " + formatTimeDisplay(data.lastUpdateTime);
@@ -1301,7 +1312,8 @@ var downloadAttachment = function(e) {
                 /* $(document.getElementById('progressBar'+id)).parent().remove();
                   $.post(server_addr + '/memberAPI/postS3Download', {
                     itemId: itemId,
-                    s3Key: s3CommonKey
+                    s3Key: s3CommonKey,
+										antiCSRF: bSafesCommonUIObj.antiCSRF
                   }, function(data, textStatus, jQxhr ){
                     if(data.status === 'ok'){
                       var item = data.item;
@@ -1379,7 +1391,8 @@ var downloadAttachment = function(e) {
         $.post(server_addr + '/memberAPI/preS3ChunkDownload', {
             itemId: itemId,
             chunkIndex: chunkIndex.toString(),
-            s3KeyPrefix: id
+            s3KeyPrefix: id,
+						antiCSRF: bSafesCommonUIObj.antiCSRF
         }, function(data, textStatus, jQxhr) {
             if (data.status === 'ok') {
                 console.log(data);
@@ -1491,7 +1504,8 @@ function uploadAttachment($attachment) {
                 $.post(server_addr + '/memberAPI/preS3ChunkUpload', {
                     itemId: itemId,
                     chunkIndex: chunkIndex.toString(),
-                    timeStamp: timeStamp
+                    timeStamp: timeStamp,
+										antiCSRF: bSafesCommonUIObj.antiCSRF
                 }, function(data, textStatus, jQxhr) {
                     if (data.status === 'ok') {
                         s3Key = data.s3Key;
@@ -1630,7 +1644,8 @@ function uploadAttachment($attachment) {
                                         "fileName": forge.util.encode64(encryptedFileName),
                                         "fileType": file.type,
                                         "size": file.size,
-                                        "numberOfChunks": numberOfChunks
+                                        "numberOfChunks": numberOfChunks,
+																				antiCSRF: bSafesCommonUIObj.antiCSRF
                                     }
                                     $.post(server_addr + '/memberAPI/addAnItemAfter', addActionOptions, function(data, textStatus, jQxhr) {
                                         if (data.status === 'ok') {
@@ -1666,7 +1681,8 @@ function uploadAttachment($attachment) {
                                         "fileName": forge.util.encode64(encryptedFileName),
                                         "fileType": file.type,
                                         "size": file.size,
-                                        "numberOfChunks": numberOfChunks
+                                        "numberOfChunks": numberOfChunks,
+																				antiCSRF: bSafesCommonUIObj.antiCSRF
                                     }, function(data, textStatus, jQxhr) {
                                         if (data.status === 'ok') {
                                             itemCopy = data.item;
@@ -1696,7 +1712,8 @@ function uploadAttachment($attachment) {
                                         "fileName": forge.util.encode64(encryptedFileName),
                                         "fileType": file.type,
                                         "size": file.size,
-                                        "numberOfChunks": numberOfChunks
+                                        "numberOfChunks": numberOfChunks,
+																				antiCSRF: bSafesCommonUIObj.antiCSRF
                                     }, function(data, textStatus, jQxhr) {
                                         if (data.status === 'ok') {
                                             itemCopy = data.item;
@@ -1733,7 +1750,8 @@ function uploadAttachment($attachment) {
                                     "fileName": forge.util.encode64(encryptedFileName),
                                     "fileType": file.type ? file.type : "unknown",
                                     "size": file.size,
-                                    "numberOfChunks": numberOfChunks
+                                    "numberOfChunks": numberOfChunks,
+																		antiCSRF: bSafesCommonUIObj.antiCSRF
                                 };
 
                                 uploadedAttachments.push(uploadedAttachment);
@@ -1883,7 +1901,7 @@ function uploadImages(files, mode, $imagePanel) {
                                 timeout: 7000,
                                 url: "/memberAPI/preS3Upload",
                                 dataType: "json",
-                                data: {},
+                                data: {antiCSRF: bSafesCommonUIObj.antiCSRF},
                                 success: function(data) {
                                     if (data.status === 'ok') {
                                         s3Key = data.s3Key;
@@ -2080,7 +2098,8 @@ function uploadImages(files, mode, $imagePanel) {
                                         "ivEnvelope": ivEnvelope,
                                         "envelopeIV": envelopeIV,
                                         "ivEnvelopeIV": ivEnvelopeIV,
-                                        "size": s3ObjectSize
+                                        "size": s3ObjectSize,
+																				antiCSRF: bSafesCommonUIObj.antiCSRF
                                     },
                                     success: function(data) {
                                         if (data.status === 'ok') {
@@ -2305,7 +2324,8 @@ function uploadImages(files, mode, $imagePanel) {
                 "keyEnvelope": keyEnvelope,
                 "ivEnvelope": ivEnvelope,
                 "envelopeIV": envelopeIV,
-                "ivEnvelopeIV": ivEnvelopeIV
+                "ivEnvelopeIV": ivEnvelopeIV,
+								antiCSRF: bSafesCommonUIObj.antiCSRF
             }
             $.post(server_addr + '/memberAPI/addAnItemAfter', addActionOptions, function(data, textStatus, jQxhr) {
                 if (data.status === 'ok') {
@@ -2328,7 +2348,8 @@ function uploadImages(files, mode, $imagePanel) {
                 "keyEnvelope": keyEnvelope,
                 "ivEnvelope": ivEnvelope,
                 "envelopeIV": envelopeIV,
-                "ivEnvelopeIV": ivEnvelopeIV
+                "ivEnvelopeIV": ivEnvelopeIV,
+								antiCSRF: bSafesCommonUIObj.antiCSRF
             }, function(data, textStatus, jQxhr) {
                 if (data.status === 'ok') {
                     itemCopy = data.item;
@@ -2345,7 +2366,8 @@ function uploadImages(files, mode, $imagePanel) {
                 "keyEnvelope": keyEnvelope,
                 "ivEnvelope": ivEnvelope,
                 "envelopeIV": envelopeIV,
-                "ivEnvelopeIV": ivEnvelopeIV
+                "ivEnvelopeIV": ivEnvelopeIV,
+								antiCSRF: bSafesCommonUIObj.antiCSRF
             }, function(data, textStatus, jQxhr) {
                 if (data.status === 'ok') {
                     itemCopy = data.item;
@@ -2502,7 +2524,8 @@ function downloadImageObject(encryptedImageElement) {
 
     $.post(server_addr + '/memberAPI/preS3Download', {
         itemId: itemId,
-        s3Key: s3Key
+        s3Key: s3Key,
+				antiCSRF: bSafesCommonUIObj.antiCSRF
     }, function(data, textStatus, jQxhr) {
         if (data.status === 'ok') {
             var signedURL = data.signedURL;
@@ -2525,7 +2548,8 @@ function downloadImageObject(encryptedImageElement) {
                 $(document.getElementById('progressBar' + id)).parent().remove();
                 $.post(server_addr + '/memberAPI/postS3Download', {
                     itemId: itemId,
-                    s3Key: s3CommonKey
+                    s3Key: s3CommonKey,
+										antiCSRF: bSafesCommonUIObj.antiCSRF
                 }, function(data, textStatus, jQxhr) {
                     if (data.status === 'ok') {
                         //var item = data.item;
@@ -2561,7 +2585,8 @@ function downloadVideoObject($videoDownload) {
 
     $.post(server_addr + '/memberAPI/preS3Download', {
         itemId: itemId,
-        s3Key: s3Key
+        s3Key: s3Key,
+				antiCSRF: bSafesCommonUIObj.antiCSRF
     }, function(data, textStatus, jQxhr) {
         if (data.status === 'ok') {
             var signedURL = data.signedURL;
@@ -2716,7 +2741,8 @@ function getPageItem(thisItemId, thisExpandedKey, thisPrivateKey, thisSearchKey,
         $.post(server_addr + '/memberAPI/getPageComments', {
             itemId: itemId,
             size: 10,
-            from: 0
+            from: 0,
+						antiCSRF: bSafesCommonUIObj.antiCSRF
         }, function(data, textStatus, jQxhr) {
             $('.commentsSearchResults').removeClass('loading col-xs-12 col-xs-offset-0 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2');
             if (data.status === "ok") {                    
@@ -2731,6 +2757,7 @@ function getPageItem(thisItemId, thisExpandedKey, thisPrivateKey, thisSearchKey,
     if (thisVersion) {
         options.oldVersion = thisVersion;
     }
+		options.antiCSRF = bSafesCommonUIObj.antiCSRF;
     $.post(server_addr + '/memberAPI/getPageItem',
         options,
         function(data, textStatus, jQxhr) {
@@ -2899,7 +2926,8 @@ function getPageItem(thisItemId, thisExpandedKey, thisPrivateKey, thisSearchKey,
 
                                         $.post(server_addr + '/memberAPI/preS3Download', {
                                             itemId: itemId,
-                                            s3Key: s3Key
+                                            s3Key: s3Key,
+																						antiCSRF: bSafesCommonUIObj.antiCSRF
                                         }, function(data, textStatus, jQxhr) {
                                             if (data.status === 'ok') {
                                                 var signedURL = data.signedURL;
@@ -2921,7 +2949,8 @@ function getPageItem(thisItemId, thisExpandedKey, thisPrivateKey, thisSearchKey,
                                                     var encryptedImageDataInArrayBuffer = this.response;
                                                     $.post(server_addr + '/memberAPI/postS3Download', {
                                                         itemId: itemId,
-                                                        s3Key: s3CommonKey
+                                                        s3Key: s3CommonKey,
+																												antiCSRF: bSafesCommonUIObj.antiCSRF
                                                     }, function(data, textStatus, jQxhr) {
                                                         if (data.status === 'ok') {
                                                             //var item = data.item;
@@ -3959,7 +3988,8 @@ function initContentView(contentFromeServer)
 
             $.post(server_addr + '/memberAPI/preS3Download', {
                 itemId: itemId,
-                s3Key: s3Key
+                s3Key: s3Key,
+								antiCSRF: bSafesCommonUIObj.antiCSRF
             }, function(data, textStatus, jQxhr) {
                 console.log('call_preS3Download = ', data.status);
                 if (data.status === 'ok') {
@@ -3986,7 +4016,8 @@ function initContentView(contentFromeServer)
                         var encryptedContentDataInArrayBuffer = this.response;
                         $.post(server_addr + '/memberAPI/postS3Download', {
                             itemId: itemId,
-                            s3Key: s3Key
+                            s3Key: s3Key,
+														antiCSRF: bSafesCommonUIObj.antiCSRF
                         }, function(data, textStatus, jQxhr) {
                             console.log('call_postS3Download = ', data.status);
                             if (data.status === 'ok') {

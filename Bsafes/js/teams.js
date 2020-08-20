@@ -66,7 +66,8 @@ function loadPage(){
       teamKeyEnvelope: encryptedTeamKey,
       searchKeyIV: searchKeyIV,
       searchKeyEnvelope: searchKeyEnvelope,
-      encryptedTeamNameByMemberPublic: encryptedTeamNameByMemberPublic
+      encryptedTeamNameByMemberPublic: encryptedTeamNameByMemberPublic,
+			antiCSRF: bSafesCommonUIObj.antiCSRF
     };
 
 		if(addAction !== "addATeamOnTop") {
@@ -187,7 +188,8 @@ function loadPage(){
 			dropAction: dropAction,
       teams: JSON.stringify(selectedTeams),
       targetTeam: targetTeamId,
-      targetPosition: targetPosition 
+      targetPosition: targetPosition,
+			antiCSRF: bSafesCommonUIObj.antiCSRF 
     }, function(data, textStatus, jQxhr) {
       if(data.status === 'ok') {
         selectedTeams.length = 0;
@@ -302,7 +304,8 @@ function loadPage(){
 					$.post(server_addr + '/memberAPI/cacheTeamNameForTeamMember', {
           	teamId: teamId,
           	memberId: memberId,
-          	cachedTeamName: forge.util.encode64(cachedTeamName)
+          	cachedTeamName: forge.util.encode64(cachedTeamName),
+						antiCSRF: bSafesCommonUIObj.antiCSRF
         	}, function(data, textStatus, jQxhr) {
           	if(data.status === 'ok') {
             	i++;
@@ -329,7 +332,8 @@ function loadPage(){
 				$.post(server_addr + '/memberAPI/updateTeamNameForTeamMember', {
       		teamId: teamId,
       		memberId: memberId,
-					encryptedTeamName: forge.util.encode64(encryptedTeamName)
+					encryptedTeamName: forge.util.encode64(encryptedTeamName),
+					antiCSRF: bSafesCommonUIObj.antiCSRF
     		}, function(data, textStatus, jQxhr) {
       		if(data.status === 'ok') {
 						i++;
@@ -390,7 +394,8 @@ function loadPage(){
 		$('.resultItems').empty();
 		$.post(server_addr + '/memberAPI/listTeams', {
 			size: itemsPerPage,
-			from: (pageNumber -1) * itemsPerPage
+			from: (pageNumber -1) * itemsPerPage,
+			antiCSRF: bSafesCommonUIObj.antiCSRF
     }, function(data, textStatus, jQxhr) {
 			if(data.status === 'ok') {
 
@@ -398,7 +403,8 @@ function loadPage(){
         if (data.hits.total > itemsPerPage) {
           $.post(server_addr + '/memberAPI/listTeams', {
             size: data.hits.total,
-            from: 0
+            from: 0,
+						antiCSRF: bSafesCommonUIObj.antiCSRF
           }, function(total_data, textStatus, jQxhr) {
             if (total_data.status === 'ok') {
               dbInsertTeamList(server_addr + '/memberAPI/listTeams', total_data);

@@ -50,6 +50,7 @@ var currentAttachmentIndex;
 var currentAttachmentChunkIndex;
 var currentAttachmentChunkTotal;
 
+var threadObj = {};
 
 function init() {
   var isGoOn = true;
@@ -233,7 +234,8 @@ function getPageItem(thisItemId, thisExpandedKey, thisPrivateKey, thisSearchKey,
     $.post(server_addr + '/memberAPI/getPageComments', {
         itemId: thisItemId,
         size: default_size,
-        from: 0
+        from: 0,
+				antiCSRF: threadObj.antiCSRF
       }, function(data, textStatus, jQxhr) {
         if (data.status === "ok") {
           var total = data.hits.total;
@@ -243,7 +245,8 @@ function getPageItem(thisItemId, thisExpandedKey, thisPrivateKey, thisSearchKey,
             $.post(server_addr + '/memberAPI/getPageComments', {
               itemId: thisItemId,
               size: total,
-              from: 0
+              from: 0,
+							antiCSRF: threadObj.antiCSRF
             }, function(total_data, textStatus, jQxhr) {
               dbInsertPageContents(server_addr + '/memberAPI/getPageComments', thisItemId, total_data);
             });
@@ -275,6 +278,12 @@ function getPageItem(thisItemId, thisExpandedKey, thisPrivateKey, thisSearchKey,
   }
 
   saveLog('< ' + thisItemId + '> started.', '', 1);
+
+	if(!threadObj.antiCSRF) {
+		threadObj.antiCSRF = localStorage.getItem("antiCSRF");
+	}
+	options.antiCSRF = threadObj.antiCSRF;
+	console.log(options.antiCSRF);
 
   $.post(server_addr + '/memberAPI/getPageItem', options, function(data, textStatus, jQxhr) {
       if (data.status === 'ok') {
@@ -599,7 +608,8 @@ function getPageItem(thisItemId, thisExpandedKey, thisPrivateKey, thisSearchKey,
 
 function getTeamData(teamId, done) {
   $.post(server_addr + '/memberAPI/getTeamData', {
-      teamId: teamId
+      teamId: teamId,
+			antiCSRF: threadObj.antiCSRF
     }, function(data, textStatus, jQxhr) {
       if (data.status === 'ok') {
         dbInsertTeams(server_addr + '/memberAPI/getTeamData', teamId, data);
@@ -625,7 +635,8 @@ var pkiDecrypt = function(encryptedData) {
 
 function getPath(itemId, pageId, done) {
   $.post(server_addr + '/memberAPI/getItemPath', {
-      itemId: itemId
+      itemId: itemId,
+			antiCSRF: threadObj.antiCSRF
     }, function(data, textStatus, jQxhr) {
       if (data.status === 'ok') {
         var path = data.itemPath;
@@ -643,7 +654,8 @@ function getPath(itemId, pageId, done) {
 //function getAndShowPath(itemId, envelopeKey, teamName, endItemTitle) {
 function getAndShowPath(itemId, envelopeKey, endItemTitle) {
   $.post(server_addr + '/memberAPI/getItemPath', {
-      itemId: itemId
+      itemId: itemId,
+			antiCSRF: threadObj.antiCSRF
     }, function(data, textStatus, jQxhr) {
       if (data.status === 'ok') {
         dbInsertItemPath(server_addr + '/memberAPI/getItemPath', itemId, data);
@@ -701,7 +713,8 @@ function downloadImageObject(item_content, itemId, index, done) {
 
     $.post(server_addr + '/memberAPI/preS3Download', {
         itemId: itemId,
-        s3Key: s3Key
+        s3Key: s3Key,
+				antiCSRF: threadObj.antiCSRF
       }, function(data, textStatus, jQxhr) {
         if (data.status === 'ok') {
           var signedURL = data.signedURL;
@@ -786,7 +799,8 @@ function downloadVideoObject(item_content, itemId, index, done) {
 
     $.post(server_addr + '/memberAPI/preS3Download', {
         itemId: itemId,
-        s3Key: s3Key
+        s3Key: s3Key,
+				antiCSRF: threadObj.antiCSRF
       }, function(data, textStatus, jQxhr) {
         if (data.status === 'ok') {
           dbInsertPageVideo(server_addr + '/memberAPI/preS3Download', itemId, s3Key, data);
@@ -901,7 +915,8 @@ function startDownloadingImages(item, done) {
 
     $.post(server_addr + '/memberAPI/preS3Download', {
         itemId: itemId,
-        s3Key: s3Key
+        s3Key: s3Key,
+				antiCSRF: threadObj.antiCSRF
       }, function(data, textStatus, jQxhr) {
         if (data.status === 'ok') {
           dbInsertPageIamge(server_addr + '/memberAPI/preS3Download', itemId, s3Key, data);
@@ -1152,7 +1167,8 @@ var downloadAttachment = function(id, done) {
     $.post(server_addr + '/memberAPI/preS3ChunkDownload', {
         itemId: itemId,
         chunkIndex: currentAttachmentChunkIndex.toString(),
-        s3KeyPrefix: id
+        s3KeyPrefix: id,
+				antiCSRF: threadObj.antiCSRF
       }, function(data, textStatus, jQxhr) {
         if (data.status === 'ok') {
           dbInsertPageAttatchment(server_addr + '/memberAPI/preS3ChunkDownload', itemId, currentAttachmentChunkIndex, id, data);
@@ -1329,7 +1345,8 @@ function initContentView(contentFromeServer, done) {
 
       $.post(server_addr + '/memberAPI/preS3Download', {
           itemId: itemId,
-          s3Key: s3Key
+          s3Key: s3Key,
+					antiCSRF: threadObj.antiCSRF
         }, function(data, textStatus, jQxhr) {
           //console.log('call_preS3Download = ', data.status);
           console.log('  == (downloaded other type s3Key)');

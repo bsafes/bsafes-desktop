@@ -5,7 +5,8 @@ function loadPage(){
 		event.preventDefault();
 		var token = $("#token1").val();
 		$.post(server_addr + '/verifyMFAToken', {
-			token: token 
+			token: token,
+			antiCSRF: bSafesCommonUIObj.antiCSRF
 		}, function(data, textStatus, jQxhr) {
       if(data.status === 'ok') {
 				navigateView('keyEnter.ejs', data.keyHint);		
